@@ -5,6 +5,7 @@ import { abrir } from './actividad.js';
 import { METODOS, MOLIENDA, extraer, diagnostico, INGREDIENTES, BEBIDAS, CLIENTES, QUIZ, GUIAS } from './datos/cafe.js';
 import { parsear, renderTokens } from './jp/texto.js';
 import { preguntar, IA } from './ia.js';
+import { seccionAcademia } from './cafe/academia.js';
 
 export function abrirCafeteria() {
   P.cafe.equipo ??= [];
@@ -16,7 +17,7 @@ const tengo = m => P.cafe.equipo.includes(m);
 function hub(c, ctx) {
   const t = (ico, tit, desc, tag, fn) => el('button.tarjeta', { onclick: fn }, el('div.t-ico', ico), el('div.t-tit', tit), el('div.t-desc', desc), tag ? el('div.t-tag', tag) : null);
   const bit = P.cafe.bitacora || [];
-  c.append(el('div.rejilla',
+  c.append(seccionAcademia(ctx), el('h3.ac-h3', '☕ El kissaten'), el('div.rejilla',
     t('🔬', 'Laboratorio', 'Jugá con molienda, ratio, temperatura y tiempo. Mirá cómo cambian la extracción y el sabor.', 'gráfico de control SCA', () => ctx.ir('Laboratorio de extracción', laboratorio)),
     t('🎯', 'Desafío de calibración', 'Kenji te da una receta que salió mal. Arreglala en 3 intentos.', 'como un barista de verdad', () => ctx.ir('Desafío de calibración', (cc, cx) => laboratorio(cc, cx, true))),
     t('🧾', 'La barra', 'Llegan clientes y piden cortados, flat whites, lágrimas… Armá cada bebida.', `${BEBIDAS.filter(b => b.nivel <= nivelBarra()).length}/${BEBIDAS.length} bebidas desbloqueadas`, () => ctx.ir('La barra', barra)),

@@ -1,0 +1,9 @@
+{
+  "name": "sando",
+  "private": true,
+  "type": "module",
+  "description": "Pruebas de la lógica de la Academia de barismo (sin dependencias: usa node:test).",
+  "scripts": {
+    "test": "node --test \"tests/**/*.test.js\""
+  }
+}
