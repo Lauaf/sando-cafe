@@ -86,3 +86,14 @@ function progresoAcademia(c, ctx) {
     el('div.ac-recs', recomendar(a, RUTA, MAPA_ERRORES, 4).map(r => el('button.ac-rec', { onclick: () => abrirModulo(ctx, r.modulo) }, el('span', '👉 ', r.texto), el('span.suave', r.motivo)))),
   );
 }
+
+/** Lecciones aprobadas de toda la ruta (para el mapa del pueblo). */
+export function resumenAcademia() {
+  const a = academia();
+  let hechas = 0, total = 0;
+  for (const m of RUTA) {
+    const pr = progresoModulo(a, m);
+    if (pr) { hechas += pr.hechas; total += pr.total; }
+  }
+  return { hechas, total };
+}
