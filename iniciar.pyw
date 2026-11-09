@@ -1,4 +1,4 @@
-"""Abre 三道 Sandō: levanta el servidor (si no está corriendo) y abre una ventana de Edge en modo app."""
+"""Abre 喫茶店 Kissaten de Kenji: levanta el servidor (si no está corriendo) y abre una ventana de Edge en modo app."""
 import json
 import os
 import socket
@@ -9,7 +9,7 @@ import urllib.request
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent
-PUERTO = 8770
+PUERTO = 8774
 URL = f'http://127.0.0.1:{PUERTO}/'
 
 
