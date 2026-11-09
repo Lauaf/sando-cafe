@@ -151,13 +151,13 @@ export function evaluarFiltro(r, objetivo = {}) {
   const [eMin, eMax] = objetivo.ey || [18, 22];
   const notas = [], defectos = [];
   let pen = 0;
-  if (r.ey < eMin) { pen += (eMin - r.ey) * 12; defectos.push('subextraido'); notas.push(`🍋 Subextraído (≈${r.ey.toFixed(1)} %): agrio y corto. Molé más fino, subí la temperatura o alargá el contacto${M.tipo === 'inmersion' ? ' (más infusión)' : ''}.`); }
-  if (r.ey > eMax) { pen += (r.ey - eMax) * 12; defectos.push('sobreextraido'); notas.push(`🪵 Sobreextraído (≈${r.ey.toFixed(1)} %): amargo y secante. Molé más grueso, bajá la temperatura o acortá el contacto.`); }
-  if (r.tds < tMin) { pen += ((tMin - r.tds) / (tMax - tMin)) * 40; defectos.push('debil'); notas.push(`💧 Débil (TDS ≈${r.tds.toFixed(2)} %): usá más café para la misma agua (ratio más concentrado).`); }
-  if (r.tds > tMax) { pen += ((r.tds - tMax) / (tMax - tMin)) * 40; defectos.push('fuerte'); notas.push(`🧱 Muy intenso (TDS ≈${r.tds.toFixed(2)} %): más agua para el mismo café.`); }
-  if (r.canal > 0.1) { pen += r.canal * 80; defectos.push('canal'); notas.push(r.bloomOk ? '💥 Extracción despareja: verté más suave o en espiral.' : '💨 Sin bloom el CO₂ del café fresco repele el agua: mojá con ~2–3× la dosis y esperá 30–45 s.'); }
-  if (M.tipo === 'percolacion' && r.tiempo > 300) notas.push('⏳ Drenó muy lento: la cama se tapó (molienda fina o mucha agitación).');
-  if (!notas.length) notas.push('☕ Dentro de la zona dulce: balanceado y con buena intensidad.');
+  if (r.ey < eMin) { pen += (eMin - r.ey) * 12; defectos.push('subextraido'); notas.push(`Subextraído (≈${r.ey.toFixed(1)} %): agrio y corto. Molé más fino, subí la temperatura o alargá el contacto${M.tipo === 'inmersion' ? ' (más infusión)' : ''}.`); }
+  if (r.ey > eMax) { pen += (r.ey - eMax) * 12; defectos.push('sobreextraido'); notas.push(`Sobreextraído (≈${r.ey.toFixed(1)} %): amargo y secante. Molé más grueso, bajá la temperatura o acortá el contacto.`); }
+  if (r.tds < tMin) { pen += ((tMin - r.tds) / (tMax - tMin)) * 40; defectos.push('debil'); notas.push(`Débil (TDS ≈${r.tds.toFixed(2)} %): usá más café para la misma agua (ratio más concentrado).`); }
+  if (r.tds > tMax) { pen += ((r.tds - tMax) / (tMax - tMin)) * 40; defectos.push('fuerte'); notas.push(`Muy intenso (TDS ≈${r.tds.toFixed(2)} %): más agua para el mismo café.`); }
+  if (r.canal > 0.1) { pen += r.canal * 80; defectos.push('canal'); notas.push(r.bloomOk ? 'Extracción despareja: verté más suave o en espiral.' : 'Sin bloom el CO₂ del café fresco repele el agua: mojá con ~2–3× la dosis y esperá 30–45 s.'); }
+  if (M.tipo === 'percolacion' && r.tiempo > 300) notas.push('Drenó muy lento: la cama se tapó (molienda fina o mucha agitación).');
+  if (!notas.length) notas.push('Dentro de la zona dulce: balanceado y con buena intensidad.');
   const puntaje = Math.round(limitar(100 - pen, 0, 100));
   return { puntaje, notas, defectos };
 }

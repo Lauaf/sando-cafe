@@ -15,16 +15,16 @@ export function abrirCafeteria() {
 const tengo = m => P.cafe.equipo.includes(m);
 
 function hub(c, ctx) {
-  const t = (ico, tit, desc, tag, fn) => el('button.tarjeta', { onclick: fn }, el('div.t-ico', ico), el('div.t-tit', tit), el('div.t-desc', desc), tag ? el('div.t-tag', tag) : null);
+  const t = (tit, desc, tag, fn) => el('button.tarjeta', { onclick: fn }, el('div.t-tit', tit), el('div.t-desc', desc), tag ? el('div.t-tag', tag) : null);
   const bit = P.cafe.bitacora || [];
-  c.append(seccionAcademia(ctx), el('h3.ac-h3', '☕ El kissaten'), el('div.rejilla',
-    t('🔬', 'Laboratorio', 'Jugá con molienda, ratio, temperatura y tiempo. Mirá cómo cambian la extracción y el sabor.', 'gráfico de control SCA', () => ctx.ir('Laboratorio de extracción', laboratorio)),
-    t('🎯', 'Desafío de calibración', 'Kenji te da una receta que salió mal. Arreglala en 3 intentos.', 'como un barista de verdad', () => ctx.ir('Desafío de calibración', (cc, cx) => laboratorio(cc, cx, true))),
-    t('🧾', 'La barra', 'Llegan clientes y piden cortados, flat whites, lágrimas… Armá cada bebida.', `${BEBIDAS.filter(b => b.nivel <= nivelBarra()).length}/${BEBIDAS.length} bebidas desbloqueadas`, () => ctx.ir('La barra', barra)),
-    t('❓', 'Quiz barista', 'Orígenes, procesos, tueste, leche, agua y diagnóstico de sabor.', null, () => ctx.ir('Quiz barista', quiz)),
-    t('⏲️', 'Preparar de verdad', 'Guía paso a paso con temporizador y voz para tu V60, prensa, moka…', null, () => ctx.ir('Preparar de verdad', guias)),
-    t('📓', 'Bitácora', 'Anotá cada café real que hacés y cómo salió. Kenji te dice qué ajustar.', `${bit.length} cafés registrados`, () => ctx.ir('Bitácora', bitacora)),
-    t('🧰', 'Mi equipo', 'Qué cafeteras tenés en casa (adapta todo a tu equipo).', P.cafe.equipo.map(m => METODOS[m]?.ico).join(' ') || 'sin elegir', () => ctx.ir('Mi equipo', equipo)),
+  c.append(seccionAcademia(ctx), el('h3.ac-h3', 'El kissaten'), el('div.rejilla',
+    t('Laboratorio', 'Jugá con molienda, ratio, temperatura y tiempo. Mirá cómo cambian la extracción y el sabor.', 'gráfico de control SCA', () => ctx.ir('Laboratorio de extracción', laboratorio)),
+    t('Desafío de calibración', 'Kenji te da una receta que salió mal. Arreglala en 3 intentos.', 'como un barista de verdad', () => ctx.ir('Desafío de calibración', (cc, cx) => laboratorio(cc, cx, true))),
+    t('La barra', 'Llegan clientes y piden cortados, flat whites, lágrimas… Armá cada bebida.', `${BEBIDAS.filter(b => b.nivel <= nivelBarra()).length}/${BEBIDAS.length} bebidas desbloqueadas`, () => ctx.ir('La barra', barra)),
+    t('Quiz barista', 'Orígenes, procesos, tueste, leche, agua y diagnóstico de sabor.', null, () => ctx.ir('Quiz barista', quiz)),
+    t('Preparar de verdad', 'Guía paso a paso con temporizador y voz para tu V60, prensa, moka…', null, () => ctx.ir('Preparar de verdad', guias)),
+    t('Bitácora', 'Anotá cada café real que hacés y cómo salió. Kenji te dice qué ajustar.', `${bit.length} cafés registrados`, () => ctx.ir('Bitácora', bitacora)),
+    t('Mi equipo', 'Qué cafeteras tenés en casa (adapta todo a tu equipo).', P.cafe.equipo.map(m => METODOS[m]?.n).filter(Boolean).join(', ') || 'sin elegir', () => ctx.ir('Mi equipo', equipo)),
   ));
 }
 
@@ -34,19 +34,19 @@ function equipo(c, ctx) {
     el('div', '¿Qué tenés en casa?'),
     el('div.chips', Object.entries(METODOS).map(([k, m]) => el('button.chip' + (tengo(k) ? '.sel' : ''), {
       onclick: () => { P.cafe.equipo = tengo(k) ? P.cafe.equipo.filter(x => x !== k) : [...P.cafe.equipo, k]; guardar(); ctx.rehacer(); },
-    }, `${m.ico} ${m.n}`))),
+    }, m.n))),
     el('div', 'Accesorios'),
-    el('div.chips', [['molinillo', '⚙️ Molinillo'], ['balanza', '⚖️ Balanza'], ['termometro', '🌡️ Pava con temperatura'], ['vaporizador', '🥛 Vaporizador / espumador']].map(([k, n]) =>
+    el('div.chips', [['molinillo', 'Molinillo'], ['balanza', 'Balanza'], ['termometro', 'Pava con temperatura'], ['vaporizador', 'Vaporizador / espumador']].map(([k, n]) =>
       el('button.chip' + (P.cafe.extras[k] ? '.sel' : ''), { onclick: () => { P.cafe.extras[k] = !P.cafe.extras[k]; guardar(); ctx.rehacer(); } }, n))),
     el('div.panel.suave', consejoEquipo()),
   );
 }
 function consejoEquipo() {
   const x = P.cafe.extras || {};
-  if (!x.balanza) return '💡 La compra que más mejora tu café: una balanza de cocina con 0.1 g (o 1 g). Medir con cuchara varía ±30 %.';
-  if (!x.molinillo) return '💡 Con café ya molido no podés ajustar la molienda: compralo molido para tu método y corregí con tiempo y temperatura. Un molinillo manual de muelas es la mejor inversión siguiente.';
-  if (!x.termometro) return '💡 Sin termómetro: dejá reposar el agua 30–45 s después de hervir y queda ~93 °C.';
-  return '💡 Tenés todo para calibrar en serio. Cambiá UNA variable por vez y anotá en la bitácora.';
+  if (!x.balanza) return 'La compra que más mejora tu café: una balanza de cocina con 0.1 g (o 1 g). Medir con cuchara varía ±30 %.';
+  if (!x.molinillo) return 'Con café ya molido no podés ajustar la molienda: compralo molido para tu método y corregí con tiempo y temperatura. Un molinillo manual de muelas es la mejor inversión siguiente.';
+  if (!x.termometro) return 'Sin termómetro: dejá reposar el agua 30–45 s después de hervir y queda ~93 °C.';
+  return 'Tenés todo para calibrar en serio. Cambiá UNA variable por vez y anotá en la bitácora.';
 }
 
 // ---------- Laboratorio ----------
@@ -77,11 +77,11 @@ function laboratorio(c, ctx, desafio = false) {
   const izq = el('div', { style: { display: 'flex', flexDirection: 'column', gap: '10px' } });
   const der = el('div', { style: { display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' } });
   const chart = el('canvas', { style: { width: '100%', height: 'calc(var(--px) * 52)' } });
-  const resultado = el('div.panel', { style: { width: '100%' } }, el('div.suave', desafio ? `🧑‍🍳 Kenji: "${reto.queja} Arreglalo: tenés 3 intentos."` : 'Ajustá la receta y apretá Preparar.'));
+  const resultado = el('div.panel', { style: { width: '100%' } }, el('div.suave', desafio ? `Kenji: "${reto.queja} Arreglalo: tenés 3 intentos."` : 'Ajustá la receta y apretá Preparar.'));
   c.append(
     el('div.chips', Object.entries(METODOS).map(([k, m]) => el('button.chip' + (k === metodo ? '.sel' : ''), {
       onclick: () => { P.cafe.labMetodo = k; guardar(); ctx.rehacer(); },
-    }, `${m.ico} ${m.n}${tengo(k) ? ' ✓' : ''}`))),
+    }, `${m.n}${tengo(k) ? ' ✓' : ''}`))),
     el('div.dos-col', izq, der));
   der.append(chart, resultado);
 
@@ -108,10 +108,10 @@ function laboratorio(c, ctx, desafio = false) {
   if (R.horas) izq.append(slider('horas', 'Reposo', R.horas[0], R.horas[1], 1, v => `${v} h`));
   if (M.moka) izq.append(el('div.fila', 'Fuego', el('div.chips', ['bajo', 'medio', 'alto'].map(f => el('button.chip' + (p.fuego === f ? '.sel' : ''), { onclick: e => { p.fuego = f; e.target.parentNode.querySelectorAll('.chip').forEach(x => x.classList.toggle('sel', x === e.target)); } }, f)))));
   if (!M.espresso && !M.moka) izq.append(el('div.fila', 'Revolver', el('div.chips', ['nada', 'un poco', 'bastante'].map((f, i) => el('button.chip' + ((p.agitacion ?? 1) === i ? '.sel' : ''), { onclick: e => { p.agitacion = i; e.target.parentNode.querySelectorAll('.chip').forEach(x => x.classList.toggle('sel', x === e.target)); } }, f)))));
-  const boton = el('button.btn.prim', { onclick: preparar }, '☕ Preparar');
+  const boton = el('button.btn.prim', { onclick: preparar }, 'Preparar');
   izq.append(el('div.fila', boton,
     el('button.btn', { onclick: () => { p = { ...METODOS[metodo].def }; ctx.rehacer(); } }, 'Receta base'),
-    GUIAS[metodo] ? el('button.btn', { onclick: () => ctx.ir('Preparar de verdad', (cc, cx) => guiaVivo(cc, cx, metodo, p)) }, '⏲️ Hacerlo de verdad') : null));
+    GUIAS[metodo] ? el('button.btn', { onclick: () => ctx.ir('Preparar de verdad', (cc, cx) => guiaVivo(cc, cx, metodo, p)) }, 'Hacerlo de verdad') : null));
   actualizarRatio();
 
   function dibujarChart() {
@@ -171,21 +171,21 @@ function laboratorio(c, ctx, desafio = false) {
         el('div.mediano', { style: { fontSize: '1.3em' } }, `${d.puntaje}/100`),
         el('div.estrellas', '★'.repeat(Math.round(d.puntaje / 20)) + '☆'.repeat(5 - Math.round(d.puntaje / 20))))),
       el('div', `Extracción ${r.ey.toFixed(1)} % · TDS ${r.tds.toFixed(2)} % · ${M.frio ? fmtT(r.tiempo) : M.espresso ? `${Math.round(r.tiempo)} s` : fmtT(r.tiempo)} · ${Math.round(r.bebida)} g en taza`),
-      el('div', `👅 ${d.sabores.join(' · ')}`),
-      ...r.extra.map(x => el('div.no', `⚠️ ${x}`)),
-      d.consejos.length ? el('div', `🧑‍🍳 Kenji: ${d.consejos.join('; ')}.`) : el('div.ok', '🧑‍🍳 Kenji: ¡Eso es! Así se calibra.'),
+      el('div', `Sabor: ${d.sabores.join(' · ')}`),
+      ...r.extra.map(x => el('div.no', x)),
+      d.consejos.length ? el('div', `Kenji: ${d.consejos.join('; ')}.`) : el('div.ok', 'Kenji: ¡Eso es! Así se calibra.'),
     );
     dibujarChart();
     if (desafio) {
       if (d.puntaje >= 90) {
         sfx.subir();
         ganarXP('cafe', 35 - intentos * 5, 'desafío superado');
-        resultado.append(el('div.ok', `✅ ¡Lo arreglaste en ${intentos} intento${intentos > 1 ? 's' : ''}!`), el('button.btn.prim', { onclick: () => ctx.rehacer() }, 'Otro desafío'));
+        resultado.append(el('div.ok', `¡Lo arreglaste en ${intentos} intento${intentos > 1 ? 's' : ''}!`), el('button.btn.prim', { onclick: () => ctx.rehacer() }, 'Otro desafío'));
         boton.disabled = true;
       } else if (intentos >= 3) {
         ganarXP('cafe', 5, 'buen intento');
         const def = METODOS[metodo].def;
-        resultado.append(el('div.no', '❌ Se acabaron los intentos.'), el('div.suave', `Receta de referencia: ${Object.entries(def).map(([k, v]) => `${k} ${v}`).join(', ')}`),
+        resultado.append(el('div.no', 'Se acabaron los intentos.'), el('div.suave', `Receta de referencia: ${Object.entries(def).map(([k, v]) => `${k} ${v}`).join(', ')}`),
           el('button.btn.prim', { onclick: () => ctx.rehacer() }, 'Otro desafío'));
         boton.disabled = true;
       } else resultado.append(el('div.suave', `Intento ${intentos}/3`));
@@ -208,15 +208,15 @@ function barra(c, ctx) {
   const controles = el('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px 14px' } });
   const recetario = el('div.panel.oculto', { style: { fontSize: '.75em' } }, disponibles.map(b => el('div', el('b', b.n), ': ', b.desc, el('span.suave', ` (${Object.entries(b.req).map(([k, [a, z]]) => `${INGREDIENTES.find(x => x.id === k).n} ${a === z ? a : a + '–' + z}`).join(', ')})`))));
   const acciones = el('div.fila',
-    el('button.btn.prim', { onclick: servir }, '🛎️ Servir'),
-    el('button.btn', { onclick: () => { for (const k in vaso) delete vaso[k]; pintarVaso(); } }, '🗑️ Tirar'),
-    el('button.btn', { onclick: () => recetario.classList.toggle('oculto') }, '📋 Recetario'));
+    el('button.btn.prim', { onclick: servir }, 'Servir'),
+    el('button.btn', { onclick: () => { for (const k in vaso) delete vaso[k]; pintarVaso(); } }, 'Tirar'),
+    el('button.btn', { onclick: () => recetario.classList.toggle('oculto') }, 'Recetario'));
   c.append(pedido, el('div.dos-col', controles, el('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' } }, tazaNodo, listaVaso)), acciones, recetario);
 
   INGREDIENTES.forEach(ing => {
     const cant = el('span', { style: { minWidth: '3em', textAlign: 'center' } });
     const fila = el('div', { style: { display: 'flex', alignItems: 'center', gap: '6px', fontSize: '.78em' } },
-      el('span', { style: { flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, `${ing.ico} ${ing.n}`),
+      el('i.muestra', { style: { background: ing.color } }), el('span', { style: { flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, ing.n),
       el('button.btn.chico', { onclick: () => { vaso[ing.id] = Math.max(0, (vaso[ing.id] || 0) - ing.paso); pintarVaso(); } }, '−'), cant,
       el('button.btn.chico', { onclick: () => { vaso[ing.id] = Math.min(ing.max, (vaso[ing.id] || 0) + ing.paso); sfx.cursor(); pintarVaso(); } }, '+'));
     fila.dataset.id = ing.id;
@@ -227,7 +227,7 @@ function barra(c, ctx) {
     const capas = INGREDIENTES.filter(x => vaso[x.id] > 0).map(x => ({ x, ml: vaso[x.id] * x.ml }));
     const total = Math.max(240, capas.reduce((s, c2) => s + c2.ml, 0));
     tazaNodo.replaceChildren(...capas.map(({ x, ml }) => el('div', { title: x.n, style: { height: ml / total * 100 + '%', background: x.color, borderTop: '1px solid #0002' } })));
-    listaVaso.textContent = capas.map(({ x }) => `${x.ico} ${vaso[x.id]}${['agua', 'leche', 'fria'].includes(x.id) ? ' ml' : x.id === 'espuma' ? ' cm' : ''}`).join(' · ') || 'vaso vacío';
+    listaVaso.textContent = capas.map(({ x }) => `${x.n.toLowerCase()} ${vaso[x.id]}${['agua', 'leche', 'fria'].includes(x.id) ? ' ml' : x.id === 'espuma' ? ' cm' : ''}`).join(' · ') || 'vaso vacío';
     controles.querySelectorAll('[data-id]').forEach(f => { f.children[2].textContent = vaso[f.dataset.id] || 0; });
   }
 
@@ -266,10 +266,10 @@ function barra(c, ctx) {
     if (!errores.length) {
       buenos++; sfx.bien(); evento('pedido_ok');
       ganarXP('cafe', 5);
-      pedido.replaceChildren(el('div.ok.mediano', `😊 ${cliente}: "¡Perfecto!"`), el('div.suave', `${bebida.n}: ${bebida.desc}`));
+      pedido.replaceChildren(el('div.ok.mediano', `${cliente}: "¡Perfecto!"`), el('div.suave', `${bebida.n}: ${bebida.desc}`));
     } else {
       sfx.mal();
-      pedido.replaceChildren(el('div.no.mediano', `😕 ${cliente}: "Mmm… esto no es un ${bebida.n.toLowerCase()}."`), ...errores.map(e => el('div.suave', `· ${e}`)), el('div', `📋 ${bebida.n}: ${bebida.desc}`));
+      pedido.replaceChildren(el('div.no.mediano', `${cliente}: "Mmm… esto no es un ${bebida.n.toLowerCase()}."`), ...errores.map(e => el('div.suave', `· ${e}`)), el('div', `${bebida.n}: ${bebida.desc}`));
     }
     acciones.classList.add('oculto');
     await esperar(errores.length ? 3800 : 1800);
@@ -305,7 +305,7 @@ async function quiz(c, ctx) {
       el('div.opciones4', { style: { width: '100%' } }, ops.map(x => el('button.btn', { style: { fontSize: '.85em' }, onclick: async e => {
         zona.querySelectorAll('.opciones4 button').forEach((b, n) => { b.disabled = true; if (ops[n].bien) b.classList.add('correcta'); });
         if (x.bien) { ok++; sfx.bien(); evento('quiz_cafe_ok'); } else { sfx.mal(); e.currentTarget.classList.add('incorrecta'); }
-        zona.append(el('div.suave', `💡 ${q.e || ''}`), el('button.btn.prim', { onclick: sig }, 'Siguiente ▶'));
+        zona.append(el('div.suave', q.e || ''), el('button.btn.prim', { onclick: sig }, 'Siguiente ▶'));
       } }, x.o))));
   }
   sig();
@@ -316,7 +316,7 @@ function guias(c, ctx) {
   const orden = [...P.cafe.equipo.filter(m => GUIAS[m]), ...Object.keys(GUIAS).filter(m => !tengo(m))];
   c.append(el('div.suave', 'Elegí tu método. La guía te avisa con voz y pitido en cada paso (dejá la compu cerca de la pava).'),
     el('div.rejilla', orden.map(m => el('button.tarjeta', { onclick: () => ctx.ir(GUIAS[m].n, (cc, cx) => guiaVivo(cc, cx, m)) },
-      el('div.t-ico', METODOS[m].ico), el('div.t-tit', GUIAS[m].n), el('div.t-desc', METODOS[m].n), tengo(m) ? el('div.t-tag', 'lo tenés') : null))));
+      el('div.t-tit', GUIAS[m].n), el('div.t-desc', METODOS[m].n), tengo(m) ? el('div.t-tag', 'lo tenés') : null))));
 }
 
 function guiaVivo(c, ctx, metodo, recetaLab = null) {
@@ -331,7 +331,7 @@ function guiaVivo(c, ctx, metodo, recetaLab = null) {
   const btn = el('button.btn.prim', { onclick: alternar }, '▶ Empezar');
   c.append(
     el('div.panel', el('div', 'Antes de empezar:'), el('ul', { style: { margin: '6px 0', lineHeight: 1.6 } }, G.antes.map(a => el('li', el('label', el('input', { type: 'checkbox' }), ' ', ajustar(a)))))),
-    el('div.fila', vT, btn, el('button.btn', { onclick: () => registrar() }, '📓 Anotar en la bitácora')),
+    el('div.fila', vT, btn, el('button.btn', { onclick: () => registrar() }, 'Anotar en la bitácora')),
     lista);
   function alternar() {
     if (reloj) { clearInterval(reloj); reloj = null; btn.textContent = '▶ Reiniciar'; return; }
@@ -384,11 +384,11 @@ function bitacora(c, ctx, previo = null) {
       el('div.fila', { style: { marginTop: '10px' } }, campo('cafe', 'Café (ej: Colombia lavado, tueste medio)', '18em'), campo('dosis', 'g café'), campo('agua', 'g agua/taza'), campo('molienda', 'molienda'), campo('tiempo', 'seg'))),
     el('div.panel', el('div', '¿Cómo salió?'), escala('acidez', 'Acidez'), escala('amargor', 'Amargor'), escala('dulzor', 'Dulzor'), escala('cuerpo', 'Intensidad'), escala('nota', 'Me gustó'),
       campo('comentario', 'Notas (sabores, qué cambiaste…)', '100%')),
-    el('div.fila', el('button.btn.prim', { onclick: guardarEntrada }, '✔ Guardar y pedir consejo')),
+    el('div.fila', el('button.btn.prim', { onclick: guardarEntrada }, '✓ Guardar y pedir consejo')),
     salida,
     P.cafe.bitacora.length ? el('div.panel', el('div', 'Tus últimos cafés'), el('table.tabla',
       el('tr', el('th', 'día'), el('th', 'método'), el('th', 'receta'), el('th', '★'), el('th', 'consejo')),
-      P.cafe.bitacora.slice(0, 8).map(b => el('tr', el('td', b.fecha.slice(5)), el('td', METODOS[b.metodo]?.ico || ''), el('td', `${b.dosis}g/${b.agua}g m${b.molienda}`), el('td', '★'.repeat(b.nota)), el('td.suave', b.consejo || ''))))) : null,
+      P.cafe.bitacora.slice(0, 8).map(b => el('tr', el('td', b.fecha.slice(5)), el('td', METODOS[b.metodo]?.n || ''), el('td', `${b.dosis}g/${b.agua}g m${b.molienda}`), el('td', '★'.repeat(b.nota)), el('td.suave', b.consejo || ''))))) : null,
   );
 
   function reglas(b) {
@@ -409,7 +409,7 @@ function bitacora(c, ctx, previo = null) {
     P.cafe.bitacora = P.cafe.bitacora.slice(0, 300);
     evento('bitacora');
     ganarXP('cafe', 20, 'café real anotado');
-    salida.replaceChildren(el('div.panel', el('div', `🧑‍🍳 Kenji: ${b.consejo}.`)));
+    salida.replaceChildren(el('div.panel', el('div', `Kenji: ${b.consejo}.`)));
     if (IA.disponible) {
       const nota = el('div.suave.escribiendo-ia', 'Kenji lo está pensando mejor');
       salida.firstChild.append(nota);
@@ -418,7 +418,7 @@ function bitacora(c, ctx, previo = null) {
         `Mi café de hoy: ${METODOS[b.metodo].n}, café "${b.cafe}", ${b.dosis} g de café, ${b.agua} g de agua (o salida), molienda ${b.molienda}, tiempo ${b.tiempo} s. Sabor (1-5): acidez ${b.acidez}, amargor ${b.amargor}, dulzor ${b.dulzor}, intensidad ${b.cuerpo}. Me gustó ${b.nota}/5. Notas: "${b.comentario}". Equipo: ${(P.cafe.equipo || []).join(', ')}; accesorios: ${Object.keys(P.cafe.extras || {}).filter(k => P.cafe.extras[k]).join(', ') || 'ninguno'}.
 Anteriores:\n${prev || 'ninguno'}\nDecime en máximo 3 líneas: qué pasó y qué UNA cosa cambiar mañana (con número concreto).` }], { max_tokens: 400 });
       nota.remove();
-      if (r) { b.consejo = r.replace(/\n+/g, ' '); salida.firstChild.replaceChildren(el('div', `🧑‍🍳 Kenji: ${r}`)); guardar(); }
+      if (r) { b.consejo = r.replace(/\n+/g, ' '); salida.firstChild.replaceChildren(el('div', `Kenji: ${r}`)); guardar(); }
     }
   }
 }

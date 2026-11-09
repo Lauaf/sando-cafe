@@ -2,18 +2,18 @@
 
 El kissaten de Kenji: aprender a preparar café de verdad, con modelos de simulación (no números al azar).
 
-**🎓 Academia de barismo**: 8 módulos que siguen el ciclo aprender → experimentar → equivocarse → recibir feedback → corregir → dominar.
+**Academia de barismo**: 8 módulos que siguen el ciclo aprender → experimentar → equivocarse → recibir feedback → corregir → dominar.
 
 | | |
 |---|---|
-| ☕ El espresso perfecto | Molé, dosificá, distribuí, tampeá y extraé en tiempo real. Carrera de 9 lecciones y desafío diario. |
-| 🩺 Diagnóstico de espresso | Leé el tiempo, el peso y el sabor; nombrá la causa y elegí la corrección. |
-| 🥤 ¿Qué café preparaste? | Verté espresso, leche, espuma y agua; un clasificador te dice qué bebida armaste. |
-| 🧾 Prepará el pedido | Taza, shots, vaporizado y vertido en el orden correcto. |
-| 🎨 Latte Art Academy | Posición, inclinación y altura de la jarra: corazón, tulipán y rosetta. |
-| ⏱️ Rush Hour | La hora pico: clientes con paciencia, dos grupos y un vaporizador compartidos. |
-| 🫖 Laboratorio de filtrados | V60, AeroPress y prensa, con comparación A/B de una sola variable. |
-| 🌱 Laboratorio de blends | Mezclá orígenes, procesos y tuestes; perfil sensorial estimado. |
+| El espresso perfecto | Molé, dosificá, distribuí, tampeá y extraé en tiempo real. Carrera de 9 lecciones y desafío diario. |
+| Diagnóstico de espresso | Leé el tiempo, el peso y el sabor; nombrá la causa y elegí la corrección. |
+| ¿Qué café preparaste? | Verté espresso, leche, espuma y agua; un clasificador te dice qué bebida armaste. |
+| Prepará el pedido | Taza, shots, vaporizado y vertido en el orden correcto. |
+| Latte Art Academy | Posición, inclinación y altura de la jarra: corazón, tulipán y rosetta. |
+| Rush Hour | La hora pico: clientes con paciencia, dos grupos y un vaporizador compartidos. |
+| Laboratorio de filtrados | V60, AeroPress y prensa, con comparación A/B de una sola variable. |
+| Laboratorio de blends | Mezclá orígenes, procesos y tuestes; perfil sensorial estimado. |
 
 Además: laboratorio de extracción con gráfico de control, desafío de calibración, la barra de pedidos, quiz barista, guías paso a paso para tu cafetera y una bitácora de los cafés reales que preparás.
 
@@ -42,7 +42,7 @@ npm test      # node:test, sin dependencias
 
 ## Partida y respaldo
 
-El progreso (nivel, racha, misiones del día, logros) se guarda solo en `datos/partida.json` (con una copia por día) y en el navegador. Desde **⚙ Opciones** podés exportar un respaldo y restaurarlo.
+El progreso (nivel, racha, misiones del día, logros) se guarda solo en `datos/partida.json` (con una copia por día) y en el navegador. Desde **Opciones** podés exportar un respaldo y restaurarlo.
 
 Como usa el mismo formato que [Sandō](https://github.com/Lauaf/Sando), podés exportar tu partida desde Sandō y restaurarla acá para seguir con el mismo progreso.
 

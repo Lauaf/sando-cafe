@@ -28,15 +28,15 @@ export function hubEspresso(c, ctx) {
       return el('button.ac-leccion' + (abierta ? '' : '.bloq') + (reg?.aprobada ? '.hecha' : ''), {
         disabled: !abierta,
         onclick: () => ctx.ir(`${i + 1}. ${L.t}`, (cc, cx) => banco(cc, cx, { leccion: L })),
-      }, el('span.n', String(i + 1)), el('span.t', L.t), reg ? estrellas(reg.estrellas) : el('span.suave', abierta ? 'nueva' : '🔒'));
+      }, el('span.n', String(i + 1)), el('span.t', L.t), reg ? estrellas(reg.estrellas) : el('span.suave', abierta ? 'nueva' : 'bloqueada'));
     })),
     el('div.rejilla',
       el('button.tarjeta', { onclick: () => ctx.ir('Desafío del día', (cc, cx) => banco(cc, cx, { leccion: diario, diario: true })) },
-        el('div.t-ico', '📅'), el('div.t-tit', 'Desafío del día'),
+        el('div.t-tit', 'Desafío del día'),
         el('div.t-desc', 'Una receta rota distinta cada día. 1 shot de diagnóstico gratis + 5 intentos.'),
         el('div.t-tag', d ? `hoy: ${d.mejor} pts · ${d.intentos}/5 intentos` : 'sin jugar hoy')),
       el('button.tarjeta', { onclick: () => ctx.ir('Práctica libre', (cc, cx) => banco(cc, cx, { libre: true })) },
-        el('div.t-ico', '🧪'), el('div.t-tit', 'Práctica libre'),
+        el('div.t-tit', 'Práctica libre'),
         el('div.t-desc', 'Todos los controles. Elegí tueste y estilo (ristretto, normale, lungo) y experimentá.'),
         el('div.t-tag', 'sin límite de intentos'))),
   );
@@ -73,7 +73,7 @@ function banco(c, ctx, cfg) {
   const mapa = lienzo('ac-mapa', 'Mapa de extracción: cada punto es uno de tus shots');
   const estadoIntentos = el('span.suave');
   const btnExtraer = el('button.btn.prim.ac-grande', { onclick: () => alternarShot() }, '▶ Extraer');
-  const btnVel = el('button.btn.chico', { onclick: () => { velocidad = velocidad === 1 ? 2 : 1; btnVel.textContent = velocidad === 1 ? '⏩ ×1' : '⏩ ×2'; }, title: 'Velocidad de la simulación' }, '⏩ ×1');
+  const btnVel = el('button.btn.chico', { onclick: () => { velocidad = velocidad === 1 ? 2 : 1; btnVel.textContent = velocidad === 1 ? 'Velocidad ×1' : 'Velocidad ×2'; }, title: 'Velocidad de la simulación' }, '×1');
 
   // --- controles ---
   const pasos = el('div.ac-pasos');
@@ -90,7 +90,7 @@ function banco(c, ctx, cfg) {
   // 2. Dosis (moler por peso)
   const vasoDosis = lienzo('ac-dosis', 'Canasta del portafiltro llenándose de café molido');
   const lecturaDosis = el('span.ac-lcd', '0.0 g');
-  const btnMoler = mantener(el('button.btn', { disabled: !puede('dosis') }, '⚙️ Moler (mantener)'), {
+  const btnMoler = mantener(el('button.btn', { disabled: !puede('dosis') }, 'Moler (mantener)'), {
     alIniciar: () => { moliendo = true; pararMolino = zumbido(118, 0.018, 'square', 900); },
     alSoltar: () => { moliendo = false; pararMolino(); },
   });
@@ -99,11 +99,11 @@ function banco(c, ctx, cfg) {
   // 3. WDT
   const wdt = lienzo('ac-wdt', 'Canasta vista desde arriba: arrastrá para romper los grumos');
   const lecturaWdt = el('span.suave');
-  const btnWdtAuto = el('button.btn.chico', { onclick: () => wdtAuto() }, '🪡 Distribuir (teclado)');
+  const btnWdtAuto = el('button.btn.chico', { onclick: () => wdtAuto() }, 'Distribuir (teclado)');
   // 4. Tampeo
   const nivel = lienzo('ac-nivel', 'Nivel de burbuja: tampeá cuando la burbuja esté en el centro');
   const lecturaTamp = el('span.suave');
-  const btnTamp = el('button.btn', { onclick: () => tampear() }, '⬇ Tampear');
+  const btnTamp = el('button.btn', { onclick: () => tampear() }, 'Tampear');
   // 5. Máquina
   const pTemp = paso({ etiqueta: 'Temperatura', valor: receta.temp, min: TEMP_RANGO[0], max: TEMP_RANGO[1], delta: 0.5, fmt: v => `${v.toFixed(1)} °C`, alCambiar: v => { receta.temp = v; }, bloqueado: !puede('temp') });
   const perfiles = el('div.chips', Object.entries(PERFILES).map(([k, pf]) => el('button.chip' + (k === receta.perfil ? '.sel' : ''), {
@@ -124,7 +124,7 @@ function banco(c, ctx, cfg) {
   const cabecera = el('div',
     cfg.leccion ? intro({ aprender: L.aprender, meta: L.meta, extra: el('div.fila', el('span.suave', `Estilo: ${objetivo.n} · ratio 1:${objetivo.ratio[0]}–${objetivo.ratio[1]}`), estadoIntentos) }) : null,
     libre ? el('div.panel', el('div.fila', el('b', 'Estilo'), objSel), metaLibre, el('div.fila', el('b', 'Café'), tuesteSel),
-      cfg.receta ? el('div.ok', `🩺 Receta del escenario: molienda ${receta.molienda.toFixed(1)}, ${receta.temp} °C, ${receta.dosis} g → cortá cerca de ${Math.round(cfg.salida)} g. Aplicá tu corrección y comprobá.`) : null) : null);
+      cfg.receta ? el('div.ok', `Receta del escenario: molienda ${receta.molienda.toFixed(1)}, ${receta.temp} °C, ${receta.dosis} g → cortá cerca de ${Math.round(cfg.salida)} g. Aplicá tu corrección y comprobá.`) : null) : null);
   c.append(cabecera,
     el('div.ac-banco',
       el('div.ac-col', escena, el('div.fila.ac-acciones', btnExtraer, btnVel, el('span.suave', 'Espacio: extraer / cortar')), lectura, resultado, grafico, mapa),
@@ -171,7 +171,7 @@ function banco(c, ctx, cfg) {
     puck.nivelado = limitar(1 - Math.abs(burbuja) * 1.05, 0, 1);
     puck.tampeado = true;
     puck.distribucion = 1 - mediaClumps() * 0.75;
-    lecturaTamp.textContent = `Nivelado ${Math.round(puck.nivelado * 100)} % · ${puck.nivelado > 0.85 ? 'parejo ✔' : puck.nivelado > 0.6 ? 'algo torcido' : 'muy torcido'}`;
+    lecturaTamp.textContent = `Nivelado ${Math.round(puck.nivelado * 100)} % · ${puck.nivelado > 0.85 ? 'parejo ✓' : puck.nivelado > 0.6 ? 'algo torcido' : 'muy torcido'}`;
     sfx.golpe();
     actualizarFase();
   }
@@ -237,7 +237,7 @@ function banco(c, ctx, cfg) {
     if (diagnostico) {
       diarioReg.diagnostico = true;
       guardar();
-      titulo = el('div.suave', '🔎 Shot de diagnóstico: no cuenta para el puntaje. Ahora corregilo.');
+      titulo = el('div.suave', 'Shot de diagnóstico: no cuenta para el puntaje. Ahora corregilo.');
     } else if (libre) {
       registrarAcademia({ comp: 'extraccion', puntaje: e.puntaje, errores: e.defectos, evaluado: false }, 'shot en práctica');
     } else {
@@ -247,7 +247,7 @@ function banco(c, ctx, cfg) {
         diarioReg.intentos++;
         diarioReg.mejor = Math.max(diarioReg.mejor, e.puntaje);
         registrarAcademia({ comp: 'extraccion', puntaje: e.puntaje, errores: e.defectos }, 'desafío del día');
-        if (diarioReg.intentos >= 5) { agotada = true; titulo = el('div', `📅 Desafío terminado: tu mejor puntaje de hoy es ${diarioReg.mejor}. Mañana hay otra receta rota.`); }
+        if (diarioReg.intentos >= 5) { agotada = true; titulo = el('div', `Desafío terminado: tu mejor puntaje de hoy es ${diarioReg.mejor}. Mañana hay otra receta rota.`); }
       } else {
         const res = registrarAcademia({ comp: 'extraccion', leccion: L.id, puntaje: e.puntaje, estrellas: aprob ? e.estrellas : 0, aprobada: aprob, errores: e.defectos }, aprob ? 'lección superada' : 'shot');
         if (aprob) {
@@ -255,12 +255,12 @@ function banco(c, ctx, cfg) {
           sfx.subir();
           const i = LECCIONES.findIndex(x => x.id === L.id);
           const sig = LECCIONES[i + 1];
-          titulo = el('div.ok', `✅ ¡Lección superada${res.aprobadaPorPrimeraVez ? '' : ' otra vez'}! `,
+          titulo = el('div.ok', `¡Lección superada${res.aprobadaPorPrimeraVez ? '' : ' otra vez'}! `,
             sig ? el('button.btn.prim', { onclick: () => ctx.volver() }, `Siguiente: ${sig.t} ▶`) : el('span', '¡Completaste la carrera de espresso!'));
           if (!sig) evento('carrera_espresso');
         } else if (!superada && intentos >= L.intentos) {
           agotada = true;
-          titulo = el('div.no', '❌ Se acabaron los intentos. Leé el diagnóstico y reintentá: cada intento te acerca.',
+          titulo = el('div.no', 'Se acabaron los intentos. Leé el diagnóstico y reintentá: cada intento te acerca.',
             el('button.btn', { onclick: () => ctx.rehacer() }, '↻ Reintentar lección'));
         }
       }
@@ -270,16 +270,16 @@ function banco(c, ctx, cfg) {
     resultado.replaceChildren(el('div.panel',
       titulo,
       el('div.fila', el('span.mediano', `${e.puntaje}`), el('span.suave', '/100'), estrellas(e.estrellas)),
-      el('div', `⏱ ${fmt(r.tiempo)} s · primera gota ${r.primeraGota != null ? fmt(r.primeraGota) + ' s' : '—'} · ⚖ ${fmt(r.enTaza)} g (1:${fmt(r.ratio)})`),
+      el('div', `${fmt(r.tiempo)} s · primera gota ${r.primeraGota != null ? fmt(r.primeraGota) + ' s' : '—'} · ${fmt(r.enTaza)} g (1:${fmt(r.ratio)})`),
       el('div.suave', `Extracción ≈ ${fmt(r.ey)} % · TDS ≈ ${fmt(r.tds)} % · estimaciones del modelo, no mediciones`),
       barras(e.sabor, ETIQUETAS_SABOR, { colores: COLORES_SABOR }),
       e.detalle.length
-        ? e.detalle.map(d => el('div.ac-defecto', el('b', `${d.ico} ${d.n}. `), d.exp, el('div.ok', `→ Probá: ${d.consejo}.`)))
-        : el('div.ok', '☕ Balanceado: dulce, con acidez viva y sin amargor seco. Repetilo para fijar la receta.'),
+        ? e.detalle.map(d => el('div.ac-defecto', el('b', `${d.n}. `), d.exp, el('div.ok', `→ Probá: ${d.consejo}.`)))
+        : el('div.ok', 'Balanceado: dulce, con acidez viva y sin amargor seco. Repetilo para fijar la receta.'),
       cmp ? el('div.ac-comparar', cmp.cambios.length
         ? [el('b', 'Comparado con el shot anterior: '), `cambiaste ${cmp.cambios.map(x => `${x.n} ${fmtValor(x.antes)} → ${fmtValor(x.ahora)}`).join(', ')}. `,
           `Tiempo ${signo(cmp.dTiempo)} s, extracción ${signo(cmp.dEY)} %.`,
-          cmp.unaVariable ? null : el('div.suave', '⚠️ Cambiaste más de una cosa: no vas a saber cuál produjo el efecto.')]
+          cmp.unaVariable ? null : el('div.suave', 'Cambiaste más de una cosa: no vas a saber cuál produjo el efecto.')]
         : el('span.suave', 'Misma receta que el shot anterior: buena forma de comprobar que el resultado se repite.')) : null,
     ));
     dibujarMapa();
@@ -318,7 +318,7 @@ function banco(c, ctx, cfg) {
     dibujarGrafico();
     dibujarDosis();
     if (puede('puck')) { dibujarWdt(); dibujarNivel(); }
-    if (fase === 'extrayendo' && shot) lectura.textContent = `⏱ ${shot.t.toFixed(1)} s · ⚖ ${shot.enTaza.toFixed(1)} g · ${shot.presion.toFixed(1)} bar · ${shot.caudal.toFixed(1)} g/s`;
+    if (fase === 'extrayendo' && shot) lectura.textContent = `${shot.t.toFixed(1)} s · ${shot.enTaza.toFixed(1)} g · ${shot.presion.toFixed(1)} bar · ${shot.caudal.toFixed(1)} g/s`;
   });
 
   function dibujarEscena(dt) {
@@ -406,7 +406,7 @@ function banco(c, ctx, cfg) {
     }
     if (shot?.canalActivo) {
       g.fillStyle = '#ffcf8a'; g.font = `${Math.round(h * 0.032)}px DotGothic16, monospace`; g.textAlign = 'left';
-      g.fillText('💥 ¡canaliza!', w * 0.62, h * 0.5);
+      g.fillText('¡canaliza!', w * 0.62, h * 0.5);
     }
   }
 
@@ -521,7 +521,7 @@ function banco(c, ctx, cfg) {
   if (diarioReg && diarioReg.intentos >= 5) {
     agotada = true;
     actualizarFase();
-    resultado.append(el('div.panel', `📅 Ya jugaste el desafío de hoy: ${diarioReg.mejor} puntos. Mañana hay otra receta rota; mientras tanto, la práctica libre no tiene límite.`));
+    resultado.append(el('div.panel', `Ya jugaste el desafío de hoy: ${diarioReg.mejor} puntos. Mañana hay otra receta rota; mientras tanto, la práctica libre no tiene límite.`));
   }
   requestAnimationFrame(dibujarMapa);
   return () => { parar(); pararBomba(); pararMolino(); removeEventListener('keydown', tecla); };

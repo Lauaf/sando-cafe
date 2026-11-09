@@ -1,8 +1,8 @@
-# 🎓 Academia de barismo — kissaten de Kenji
+# Academia de barismo — kissaten de Kenji
 
 La senda del café de Sandō pasó de tener un laboratorio, una barra y un quiz a tener una **academia interactiva** con 8 módulos prácticos. Cada módulo sigue el ciclo **aprender → experimentar → equivocarse → recibir feedback → corregir → dominar**, y todos se apoyan en modelos de simulación (no en números al azar).
 
-Se entra desde el pueblo: puerta del 喫茶店 → sección **🎓 Academia de barismo**, arriba de las herramientas que ya existían (que siguen igual, más abajo, en **☕ El kissaten**).
+Se entra desde el pueblo: puerta del 喫茶店 → sección **Academia de barismo**, arriba de las herramientas que ya existían (que siguen igual, más abajo, en **El kissaten**).
 
 ---
 
@@ -46,17 +46,17 @@ No copié código, diseños, ilustraciones ni recursos de ninguna plataforma: to
 ### 2.1 Ruta y navegación
 
 ```
-Pueblo → 喫茶店 → 🎓 Academia de barismo
+Pueblo → 喫茶店 → Academia de barismo
    ├─ recomendaciones ("Qué practicar después")   ← errores repetidos y competencias flojas
-   ├─ 📊 Mi progreso (dominio por competencia)
-   ├─ 1 ☕ El espresso perfecto        (Extracción)
-   ├─ 2 🩺 Diagnóstico de espresso      (Diagnóstico)
-   ├─ 3 🥤 ¿Qué café preparaste?        (Recetas)
-   ├─ 4 🧾 Prepará el pedido            (Leche)
-   ├─ 5 🎨 Latte Art Academy            (Latte art)
-   ├─ 6 ⏱️ Rush Hour                    (Servicio)
-   ├─ 7 🫖 Laboratorio de filtrados     (Filtrados)
-   └─ 8 🌱 Laboratorio de blends        (Cata)
+   ├─ Mi progreso (dominio por competencia)
+   ├─ 1 El espresso perfecto        (Extracción)
+   ├─ 2 Diagnóstico de espresso      (Diagnóstico)
+   ├─ 3 ¿Qué café preparaste?        (Recetas)
+   ├─ 4 Prepará el pedido            (Leche)
+   ├─ 5 Latte Art Academy            (Latte art)
+   ├─ 6 Rush Hour                    (Servicio)
+   ├─ 7 Laboratorio de filtrados     (Filtrados)
+   └─ 8 Laboratorio de blends        (Cata)
 ```
 
 El orden prioriza valor educativo y reutilización técnica: el modelo de espresso alimenta el diagnóstico, los pedidos y Rush Hour; el modelo de bebidas y el de leche alimentan la taza, los pedidos y Rush Hour.
@@ -75,45 +75,45 @@ El orden prioriza valor educativo y reutilización técnica: el modelo de espres
 
 ## 3. Módulos
 
-### 3.1 ☕ El espresso perfecto
+### 3.1 El espresso perfecto
 - **Acciones:** girar la perilla del molino (arrastrar / flechas), **moler manteniendo apretado** mientras la balanza sube, quitar o vaciar, **WDT dibujando círculos** sobre la canasta (los grumos desaparecen), **tampear** con un nivel de burbuja que oscila (el nivelado depende de cuándo apretás), temperatura (PID), perfil de presión (plano, preinfusión, declinante), **Extraer / Cortar** (botón o Espacio), velocidad ×1/×2.
 - **Visual en tiempo real:** manómetro, reloj, chorro cuyo grosor sigue al caudal y cuyo color sigue a la concentración (se "rubia" al final), gotas y salpicaduras si canaliza, taza que se llena con crema, balanza, gráfico en vivo de presión/caudal/peso y mapa de extracción con todos tus shots.
 - **Feedback:** puntaje 0–100 y estrellas, perfil de sabor estimado, defectos con explicación y consejo, y **comparación con el shot anterior** (qué cambiaste y qué efecto tuvo; avisa si cambiaste más de una cosa).
 - **Carrera (9 lecciones):** cortar a tiempo → shot que vuela → shot que no sale → ristretto → canalización → cambio de dosis → tueste claro → tueste oscuro → preinfusión. Cada lección habilita solo los controles que enseña. Se aprueba con 75.
 
-### 3.2 🩺 Diagnóstico de espresso
+### 3.2 Diagnóstico de espresso
 - Casos generados con **el mismo modelo** del simulador: queja del cliente, receta, tiempo, primera gota, notas de cata, pistas visuales, curva de presión/caudal y color de la crema.
 - Paso 1: causa más probable (subextracción, sobreextracción, canalización, ratio largo/corto). Paso 2: corrección (4 opciones). Después ves **qué habría pasado con cada opción** (tiempo, extracción y puntaje simulados) y podés **probarlo en el simulador** con la receta del caso.
 - Varias correcciones pueden ser válidas: se clasifican como "la mejor", "también sirve", "ayuda poco", "casi no cambia", "empeora". 3 rondas (básica, intermedia, avanzada).
 
-### 3.3 🥤 ¿Qué café preparaste?
+### 3.3 ¿Qué café preparaste?
 - **Arrastrá las jarras** (espresso, leche vaporizada, espuma, agua) sobre la taza para verter; mientras está encima, vierte. Con teclado: mantener Espacio sobre la jarra.
 - La taza (SVG) se llena por capas: la espuma flota, el espresso al final sobre leche queda en capas (latte macchiato) y sobre agua conserva la crema (long black).
 - **Clasificador en vivo** por proporciones y orden; **comparación con recetas** (barras de proporción, tabla en ml, consejos "agregá ~40 ml de leche", variantes regionales).
 - 3 lecciones de 4 bebidas: las bases, la familia de la espuma, parecidas pero distintas.
 
-### 3.4 🧾 Prepará el pedido
+### 3.4 Prepará el pedido
 - Estaciones: **taza**, **espresso** (sacar y cortar cada shot), **leche** (llenar la jarra manteniendo, vaporizar manteniendo y elegir la posición de la punta: hundida / superficie / muy afuera, con W/S o ↑/↓; termómetro con zonas; espuma y burbujas visibles; remolino), **servir leche** arrastrando la jarra (con opción de retener la espuma o cucharada), **agua**.
 - Evaluación: **exactitud** (proporciones), **técnica** (shots + temperatura/textura de leche según la bebida y el pedido: tibio, normal, bien caliente), **orden** y **presentación** (recipiente, rebalse). Servir otra bebida no se salva con buena técnica.
 - 5 lecciones (sin leche, leche sedosa, mucha espuma, el orden importa, pedidos con detalles) + barra libre.
 
-### 3.5 🎨 Latte Art Academy
+### 3.5 Latte Art Academy
 - **Dibujás con el vertido:** el pico sigue al puntero (con inercia de la mano), mantener = verter, rueda o +/− = inclinación (flujo), 1/2/3 o Shift = altura (alta, media, cerca). Funciona con mouse, táctil y teclado (flechas + Espacio).
 - Taza vista desde arriba con la superficie simulada en tiempo real; guía opcional de la figura; medidores de llenado, flujo y altura; **repetición** del vertido.
 - Progresión: control del flujo → círculo → corazón → tulipán → rosetta. Evalúa forma (silueta + rasgos de cada figura: muesca y punta del corazón, capas del tulipán, hojas de la rosetta), simetría, centrado, definición, llenado y continuidad. Se aprueba con 80.
 
-### 3.6 ⏱️ Rush Hour
+### 3.6 Rush Hour
 - Turno con **actos de dificultad creciente** (apertura, media mañana, hora pico), clientes con **barra de paciencia**, **2 grupos de espresso y 1 lanceta compartidos** (hay que esperar si están ocupados), hasta 3 bebidas en paralelo.
 - Consecuencias reales: el shot que no cortás se pasa, la leche que dejás se quema, **el espresso que espera se muere**, el cliente que espera demasiado se va, y la satisfacción combina calidad y espera. Caja con propinas.
 - Resumen: puntaje, atendidos, perdidos, satisfacción, errores más frecuentes y qué practicar. 3 turnos (apertura, completo, hora pico). Atajos 1/2/3.
 
-### 3.7 🫖 Laboratorio de filtrados
+### 3.7 Laboratorio de filtrados
 - V60, AeroPress y prensa francesa. Variables: café, agua, molienda (µm), temperatura, bloom (agua y espera), cantidad y velocidad de vertidos, patrón (centro/espiral), infusión y prensado.
 - **Animación de la preparación** (pava, cono o cámara, nivel del agua, cama, goteo, servidor), resultados con tiempo, bebida, extracción y TDS, y **gráfico de control** con la zona dulce del método.
 - **Laboratorio A/B:** dos recetas lado a lado, "copiar A", aviso en vivo de cuántas variables cambiaste, comparación en tabla, gráfico y curvas, y una conclusión cuando cambiaste una sola.
 - 5 lecciones: molienda y tiempo, bloom, ratio e intensidad, AeroPress, prensa.
 
-### 3.8 🌱 Laboratorio de blends
+### 3.8 Laboratorio de blends
 - 10 cafés con origen, variedad, proceso y una nota típica. **Arrastrá las bolsas a la tolva**, ajustá proporciones y tueste de cada componente.
 - **Radar sensorial estimado**, cafeína relativa, crema, complejidad, barras por atributo y **"¿por qué?"** (qué aporta cada café a la mezcla). Avisos de enmascaramiento, demasiados componentes o tuestes muy distintos.
 - 4 pedidos del tostador (espresso para leche, filtro frutal, espresso con robusta, equilibrio de la casa).

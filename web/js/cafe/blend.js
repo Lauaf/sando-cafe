@@ -6,7 +6,7 @@ import { desbloqueada } from './modelo-academia.js';
 import { academia, registrarAcademia } from './progreso-academia.js';
 import { intro, estrellas, barras } from './vista.js';
 
-const AVISO = '⚠️ Perfil estimado por un modelo educativo a partir de perfiles típicos de cada origen y proceso. No es una cata ni una medición: cada lote real es distinto.';
+const AVISO = 'Perfil estimado por un modelo educativo a partir de perfiles típicos de cada origen y proceso. No es una cata ni una medición: cada lote real es distinto.';
 
 export function hubBlend(c, ctx) {
   const a = academia();
@@ -17,10 +17,10 @@ export function hubBlend(c, ctx) {
       const abierta = desbloqueada(a, PEDIDOS, P.id);
       const reg = a.lecciones[P.id];
       return el('button.ac-leccion' + (abierta ? '' : '.bloq') + (reg?.aprobada ? '.hecha' : ''), { disabled: !abierta, onclick: () => ctx.ir(P.t, (cc, cx) => mesa(cc, cx, P)) },
-        el('span.n', String(i + 1)), el('span.t', P.t), reg ? estrellas(reg.estrellas) : el('span.suave', abierta ? 'nuevo' : '🔒'));
+        el('span.n', String(i + 1)), el('span.t', P.t), reg ? estrellas(reg.estrellas) : el('span.suave', abierta ? 'nuevo' : 'bloqueado'));
     })),
     el('button.tarjeta', { onclick: () => ctx.ir('Mezcla libre', (cc, cx) => mesa(cc, cx, null)) },
-      el('div.t-ico', '🌱'), el('div.t-tit', 'Mezcla libre'), el('div.t-desc', 'Probá combinaciones y mirá cómo suma cada café.')),
+      el('div.t-tit', 'Mezcla libre'), el('div.t-desc', 'Probá combinaciones y mirá cómo suma cada café.')),
     el('div.suave', AVISO),
   );
 }
@@ -45,7 +45,7 @@ function mesa(c, ctx, P) {
     el('div.ac-banco',
       el('div.ac-col', el('div.panel', el('b', 'Cafés verdes disponibles'), el('div.suave', 'Arrastrá una bolsa a la tolva (o tocala).'), catalogo)),
       el('div.ac-col',
-        el('div.panel', el('b', '🫘 Tolva'), tolva, bolsa),
+        el('div.panel', el('b', 'Tolva'), tolva, bolsa),
         el('div.panel', el('b', 'Perfil estimado'), radar, datos, evalNodo),
         el('div.suave', AVISO))));
 
@@ -87,16 +87,16 @@ function mesa(c, ctx, P) {
     if (!m) { radar.innerHTML = svgRadar(null, P); datos.replaceChildren(); evalNodo.replaceChildren(); return; }
     radar.innerHTML = svgRadar(m.perfil, P);
     datos.replaceChildren(
-      el('div.fila', el('span', `☕ Cafeína ×${m.cafeina.toFixed(1)}`), el('span', `🟫 Crema ${m.crema.toFixed(1)}/10`), el('span', `🧩 Complejidad ${m.complejidad.toFixed(0)}/10`)),
+      el('div.fila', el('span', `Cafeína ×${m.cafeina.toFixed(1)}`), el('span', `Crema ${m.crema.toFixed(1)}/10`), el('span', `Complejidad ${m.complejidad.toFixed(0)}/10`)),
       barras(m.perfil, ATRIBUTOS),
       el('div', el('b', '¿Por qué? '), explicarAportes(m).map(x => { const cafe = CAFES.find(y => y.id === x.id); return el('div.suave', `• ${cafe.origen} ${cafe.proceso.toLowerCase()} aporta sobre todo ${x.txt}.`); })),
       m.notas.map(n => el('div', n)));
     if (P) {
       const ev = evaluarBlend(m, P, comps);
       evalNodo.replaceChildren(el('div.panel',
-        el('div.fila', el('span.mediano', `${ev.puntaje}`), el('span.suave', '/100 (estimado)'), ev.puntaje >= 80 ? el('span.ok', '✔ cumple el pedido') : null),
+        el('div.fila', el('span.mediano', `${ev.puntaje}`), el('span.suave', '/100 (estimado)'), ev.puntaje >= 80 ? el('span.ok', '✓ cumple el pedido') : null),
         ev.fallas.map(f => el('div.no', `→ ${f}`)),
-        el('button.btn.prim', { onclick: () => enviar(ev) }, '📦 Mandar al tostador')));
+        el('button.btn.prim', { onclick: () => enviar(ev) }, 'Mandar al tostador')));
     }
   }
 
@@ -105,7 +105,7 @@ function mesa(c, ctx, P) {
     const est = ev.puntaje >= 95 ? 3 : ev.puntaje >= 88 ? 2 : aprob ? 1 : 0;
     registrarAcademia({ comp: 'cata', leccion: P.id, puntaje: ev.puntaje, estrellas: est, aprobada: aprob }, aprob ? 'blend aprobado' : 'blend');
     if (aprob) { sfx.subir(); evento('blend_ok'); } else sfx.mal();
-    evalNodo.append(el('div' + (aprob ? '.ok' : '.no'), aprob ? '✅ El tostador lo aprueba para una prueba de cata.' : '❌ Todavía no: mirá qué atributo falta y qué café lo aporta.'),
+    evalNodo.append(el('div' + (aprob ? '.ok' : '.no'), aprob ? 'El tostador lo aprueba para una prueba de cata.' : 'Todavía no: mirá qué atributo falta y qué café lo aporta.'),
       aprob ? el('button.btn', { onclick: () => ctx.volver() }, 'Volver a los pedidos') : null);
   }
 
@@ -122,7 +122,7 @@ function arrastrarBolsa(card, alSoltar) {
     if (!card.hasPointerCapture(e.pointerId)) return;
     if (!movio && Math.hypot(e.clientX - x0, e.clientY - y0) > 8) {
       movio = true;
-      fantasma = el('div.ac-fantasma', '🫘');
+      fantasma = el('div.ac-fantasma', el('i', { style: { background: '#6b4226' } }));
       document.body.append(fantasma);
     }
     if (fantasma) {

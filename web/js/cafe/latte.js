@@ -18,10 +18,10 @@ export function hubLatte(c, ctx) {
       const abierta = desbloqueada(a, LECCIONES, L.id);
       const reg = a.lecciones[L.id];
       return el('button.ac-leccion' + (abierta ? '' : '.bloq') + (reg?.aprobada ? '.hecha' : ''), { disabled: !abierta, onclick: () => ctx.ir(L.t, (cc, cx) => taza(cc, cx, L)) },
-        el('span.n', String(i + 1)), el('span.t', L.t), reg ? estrellas(reg.estrellas) : el('span.suave', abierta ? 'nueva' : '🔒'));
+        el('span.n', String(i + 1)), el('span.t', L.t), reg ? estrellas(reg.estrellas) : el('span.suave', abierta ? 'nueva' : 'bloqueada'));
     })),
     el('button.tarjeta', { onclick: () => ctx.ir('Lienzo libre', (cc, cx) => taza(cc, cx, null)) },
-      el('div.t-ico', '🎨'), el('div.t-tit', 'Lienzo libre'), el('div.t-desc', 'Sin objetivo ni puntaje: experimentá con flujo, altura y movimiento.')),
+      el('div.t-tit', 'Lienzo libre'), el('div.t-desc', 'Sin objetivo ni puntaje: experimentá con flujo, altura y movimiento.')),
   );
 }
 
@@ -45,7 +45,7 @@ function taza(c, ctx, L) {
 
   const flujo = el('input', { type: 'range', min: 0, max: 100, value: 50, 'aria-label': 'Inclinación de la jarra (flujo)' });
   flujo.addEventListener('input', () => { mano.flujo = +flujo.value / 100; });
-  const ALTURAS = { alta: { n: '⬆ Alta', v: 0.9, d: 'la leche se hunde: llena la base' }, media: { n: '↕ Media', v: 0.5, d: 'para cortar' }, cerca: { n: '⬇ Cerca', v: 0.06, d: 'rozando: dibuja' } };
+  const ALTURAS = { alta: { n: '↑ Alta', v: 0.9, d: 'la leche se hunde: llena la base' }, media: { n: '↕ Media', v: 0.5, d: 'para cortar' }, cerca: { n: '↓ Cerca', v: 0.06, d: 'rozando: dibuja' } };
   const btnAltura = el('div.chips', { role: 'radiogroup', 'aria-label': 'Altura de la jarra' }, Object.entries(ALTURAS).map(([k, a], i) =>
     el('button.chip', { role: 'radio', 'data-alt': k, title: `${a.d} (tecla ${i + 1})`, onclick: () => { mano.altura = k; pintarAltura(); } }, a.n)));
   const alturaActual = () => (mano.teclaCerca ? 'cerca' : mano.altura);
@@ -60,12 +60,12 @@ function taza(c, ctx, L) {
   const chkGuia = el('label.fila', el('input', { type: 'checkbox', checked: guia, disabled: !mask, onchange: e => { guia = e.target.checked; } }), 'Mostrar la figura guía');
 
   c.append(
-    L ? intro({ aprender: L.aprender, meta: L.meta, extra: el('div.suave', `💡 ${L.ayuda}`) }) : intro({ meta: 'Experimentá libremente. Probá verter alto y después rozando, quieto y moviendo la jarra.' }),
+    L ? intro({ aprender: L.aprender, meta: L.meta, extra: el('div.suave', L.ayuda) }) : intro({ meta: 'Experimentá libremente. Probá verter alto y después rozando, quieto y moviendo la jarra.' }),
     el('div.ac-banco',
-      el('div.ac-col', cv, el('div.suave', '🖱️ Mantené apretado sobre la taza para verter y mové para dirigir el chorro. La jarra entra desde arriba. Rueda o +/−: inclinación · Altura: 1 alta, 2 media, 3 cerca (o mantené Shift = cerca) · Teclado: flechas mueven, Espacio vierte.')),
+      el('div.ac-col', cv, el('div.suave', 'Mantené apretado sobre la taza para verter y mové para dirigir el chorro. La jarra entra desde arriba. Rueda o +/−: inclinación · Altura: 1 alta, 2 media, 3 cerca (o mantené Shift = cerca) · Teclado: flechas mueven, Espacio vierte.')),
       el('div.ac-col',
         el('div.panel', el('div.fila', el('b', 'Inclinación (flujo)'), flujo), el('div.fila', el('b', 'Altura'), btnAltura), chkGuia, medidores, lectura,
-          el('div.fila', el('button.btn', { onclick: reiniciar }, '↻ Taza nueva'), L ? el('button.btn.prim', { onclick: () => evaluar() }, '✔ Evaluar') : null,
+          el('div.fila', el('button.btn', { onclick: reiniciar }, '↻ Taza nueva'), L ? el('button.btn.prim', { onclick: () => evaluar() }, '✓ Evaluar') : null,
             el('button.btn', { onclick: repetir }, '▶ Repetición'))),
         resultado)));
 
@@ -235,7 +235,7 @@ function taza(c, ctx, L) {
     registrarAcademia({ comp: 'latte', leccion: L.id, puntaje: ev.puntaje, estrellas: est, aprobada: aprob, errores: [] }, aprob ? 'latte art' : 'práctica de latte art');
     if (aprob) { sfx.subir(); evento('latte_' + (L.fig || 'flujo')); } else sfx.mal();
     resultado.replaceChildren(el('div.panel',
-      el('div.fila', el('span.mediano', `${ev.puntaje}`), el('span.suave', '/100'), estrellas(est), el('span', aprob ? '✅ ¡Aprobada!' : `Aprobás con ${APRUEBA}`)),
+      el('div.fila', el('span.mediano', `${ev.puntaje}`), el('span.suave', '/100'), estrellas(est), el('span', aprob ? '¡Aprobada!' : `Aprobás con ${APRUEBA}`)),
       barras(Object.fromEntries(Object.entries(ev.partes).map(([k, v]) => [k, v * 10])), ETIQUETAS),
       ev.notas.map(n => el('div', n)),
       el('div.fila', el('button.btn.prim', { onclick: reiniciar }, '↻ Otra taza'), el('button.btn', { onclick: repetir }, '▶ Ver repetición'),

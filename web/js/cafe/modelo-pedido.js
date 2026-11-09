@@ -26,7 +26,7 @@ export function textoPedido(p, rnd = Math.random) {
   if (p.shots === 2 && !['doppio', 'flatwhite', 'longblack'].includes(p.receta)) txt += ' doble';
   if (p.temp === 'tibio') txt += ', tibio';
   if (p.temp === 'caliente') txt += ', bien caliente';
-  return `${elegir(['Hola, ¿me hacés un', 'Buenas, quiero un', 'Un', '¿Me preparás un', 'Para tomar acá: un'])} ${txt}${elegir([', porfa.', ', gracias.', '.', ' 🙏'])}`;
+  return `${elegir(['Hola, ¿me hacés un', 'Buenas, quiero un', 'Un', '¿Me preparás un', 'Para tomar acá: un'])} ${txt}${elegir([', porfa.', ', gracias.', '.', ''])}`;
 }
 
 /** Pedido al azar entre `recetas`. detalles=true agrega doble / temperatura. */
@@ -60,7 +60,7 @@ export function evaluarPedido(p, prep) {
   if (prep.shots?.length) {
     const s = prep.shots.reduce((a, b) => a + b, 0) / prep.shots.length;
     partesTec.push(s);
-    if (s < 70) { errores.push('shot'); notas.push('☕ Los shots no salieron bien (cortá cerca de 30–40 g por shot).'); }
+    if (s < 70) { errores.push('shot'); notas.push('Los shots no salieron bien (cortá cerca de 30–40 g por shot).'); }
   }
   const usaLeche = (r.comp.leche?.[1] || 0) > 0 || (r.comp.espuma?.[1] || 0) > 0;
   if (usaLeche && (prep.cont.leche > 0 || prep.cont.espuma > 0)) {
@@ -77,13 +77,13 @@ export function evaluarPedido(p, prep) {
   }
   const tecnica = partesTec.length ? Math.round(partesTec.reduce((a, b) => a + b, 0) / partesTec.length) : 100;
   const orden = ordenCumplido(r.orden, prep.orden) ? 100 : 0;
-  if (!orden) { errores.push('orden'); notas.push(r.orden === 'espresso_ultimo' ? '🔁 El espresso va al final (sobre la leche o el agua).' : '🔁 El espresso va primero.'); }
+  if (!orden) { errores.push('orden'); notas.push(r.orden === 'espresso_ultimo' ? 'El espresso va al final (sobre la leche o el agua).' : 'El espresso va primero.'); }
   let presentacion = 100;
   const total = Object.values(prep.cont).reduce((a, b) => a + b, 0);
   if (!prep.taza) { presentacion = 0; notas.push('Sin taza…'); }
   else {
-    if (total > TAZAS[prep.taza].cap) { presentacion -= 60; errores.push('rebalse'); notas.push('💦 Rebalsó la taza.'); }
-    if (!r.taza.includes(prep.taza)) { presentacion -= 40; errores.push('taza'); notas.push(`🍵 Un ${r.n.toLowerCase()} suele ir en ${r.taza.map(t => TAZAS[t].n.toLowerCase()).join(' o ')}.`); }
+    if (total > TAZAS[prep.taza].cap) { presentacion -= 60; errores.push('rebalse'); notas.push('Rebalsó la taza.'); }
+    if (!r.taza.includes(prep.taza)) { presentacion -= 40; errores.push('taza'); notas.push(`Un ${r.n.toLowerCase()} suele ir en ${r.taza.map(t => TAZAS[t].n.toLowerCase()).join(' o ')}.`); }
   }
   presentacion = Math.max(0, presentacion);
   let totalPts = Math.round(0.4 * exactitud + 0.35 * tecnica + 0.15 * orden + 0.1 * presentacion);

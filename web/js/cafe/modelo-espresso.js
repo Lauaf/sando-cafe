@@ -192,12 +192,12 @@ export const OBJETIVOS = {
 };
 
 export const DEFECTOS = {
-  subextraido: { n: 'Subextraído', ico: '🍋', exp: 'El agua no llegó a disolver lo suficiente: salen primero los ácidos y las sales; faltan azúcares y cuerpo. Sabe agrio, salado y corto.' },
-  sobreextraido: { n: 'Sobreextraído', ico: '🪵', exp: 'Se disolvió de más: después de los azúcares salen compuestos amargos y secantes. Sabe amargo, hueco y te seca la boca.' },
-  canalizacion: { n: 'Canalización', ico: '💥', exp: 'El agua encontró un camino fácil en el puck: por ahí pasa casi sin extraer y el resto se sobreextrae. Por eso sabe agrio y amargo a la vez.' },
-  ratio_corto: { n: 'Ratio corto', ico: '📏', exp: 'Cortaste antes de la salida pedida: queda más concentrado y, en general, menos extraído.' },
-  ratio_largo: { n: 'Ratio largo', ico: '📏', exp: 'Dejaste correr más de lo pedido: más diluido y con más extracción tardía (amargor).' },
-  ahogado: { n: 'Ahogado', ico: '🧱', exp: 'Casi no pasa agua: la molienda es tan fina (o la dosis tan alta) que la bomba no puede atravesar el puck.' },
+  subextraido: { n: 'Subextraído', exp: 'El agua no llegó a disolver lo suficiente: salen primero los ácidos y las sales; faltan azúcares y cuerpo. Sabe agrio, salado y corto.' },
+  sobreextraido: { n: 'Sobreextraído', exp: 'Se disolvió de más: después de los azúcares salen compuestos amargos y secantes. Sabe amargo, hueco y te seca la boca.' },
+  canalizacion: { n: 'Canalización', exp: 'El agua encontró un camino fácil en el puck: por ahí pasa casi sin extraer y el resto se sobreextrae. Por eso sabe agrio y amargo a la vez.' },
+  ratio_corto: { n: 'Ratio corto', exp: 'Cortaste antes de la salida pedida: queda más concentrado y, en general, menos extraído.' },
+  ratio_largo: { n: 'Ratio largo', exp: 'Dejaste correr más de lo pedido: más diluido y con más extracción tardía (amargor).' },
+  ahogado: { n: 'Ahogado', exp: 'Casi no pasa agua: la molienda es tan fina (o la dosis tan alta) que la bomba no puede atravesar el puck.' },
 };
 
 const CONSEJOS = {

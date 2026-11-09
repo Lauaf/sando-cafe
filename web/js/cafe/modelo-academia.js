@@ -2,14 +2,14 @@
 // El estado vive en P.cafe.academia; acá solo hay funciones que lo leen y lo actualizan.
 
 export const COMPETENCIAS = {
-  extraccion: { n: 'Extracción', ico: '☕', desc: 'Molienda, dosis, ratio, temperatura y preparación del puck.' },
-  diagnostico: { n: 'Diagnóstico', ico: '🩺', desc: 'Leer un sabor y saber qué variable tocar.' },
-  recetas: { n: 'Recetas', ico: '📐', desc: 'Proporciones de espresso, leche, espuma y agua.' },
-  leche: { n: 'Leche', ico: '🥛', desc: 'Airear, texturizar y llegar a la temperatura justa.' },
-  latte: { n: 'Latte art', ico: '🎨', desc: 'Control del flujo, altura y trayectoria del vertido.' },
-  servicio: { n: 'Servicio', ico: '⏱️', desc: 'Priorizar, trabajar en paralelo y no equivocarse bajo presión.' },
-  filtrado: { n: 'Filtrados', ico: '🫖', desc: 'Ratio, molienda, bloom, vertido y tiempo en métodos de filtro.' },
-  cata: { n: 'Cata y blends', ico: '🌱', desc: 'Origen, proceso y tueste: cómo suma cada café a una mezcla.' },
+  extraccion: { n: 'Extracción', desc: 'Molienda, dosis, ratio, temperatura y preparación del puck.' },
+  diagnostico: { n: 'Diagnóstico', desc: 'Leer un sabor y saber qué variable tocar.' },
+  recetas: { n: 'Recetas', desc: 'Proporciones de espresso, leche, espuma y agua.' },
+  leche: { n: 'Leche', desc: 'Airear, texturizar y llegar a la temperatura justa.' },
+  latte: { n: 'Latte art', desc: 'Control del flujo, altura y trayectoria del vertido.' },
+  servicio: { n: 'Servicio', desc: 'Priorizar, trabajar en paralelo y no equivocarse bajo presión.' },
+  filtrado: { n: 'Filtrados', desc: 'Ratio, molienda, bloom, vertido y tiempo en métodos de filtro.' },
+  cata: { n: 'Cata y blends', desc: 'Origen, proceso y tueste: cómo suma cada café a una mezcla.' },
 };
 
 const VENTANA = 8;          // dominio = promedio de los últimos N puntajes de esa competencia

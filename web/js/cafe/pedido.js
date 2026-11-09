@@ -26,10 +26,10 @@ export function hubPedido(c, ctx) {
       const abierta = desbloqueada(a, LECCIONES_PEDIDO, L.id);
       const reg = a.lecciones[L.id];
       return el('button.ac-leccion' + (abierta ? '' : '.bloq') + (reg?.aprobada ? '.hecha' : ''), { disabled: !abierta, onclick: () => ctx.ir(L.t, (cc, cx) => barra(cc, cx, L)) },
-        el('span.n', String(i + 1)), el('span.t', L.t), reg ? estrellas(reg.estrellas) : el('span.suave', abierta ? 'nueva' : '🔒'));
+        el('span.n', String(i + 1)), el('span.t', L.t), reg ? estrellas(reg.estrellas) : el('span.suave', abierta ? 'nueva' : 'bloqueada'));
     })),
     el('button.tarjeta', { onclick: () => ctx.ir('Barra libre', (cc, cx) => barra(cc, cx, { id: 'libre', t: 'Barra libre', recetas: Object.keys(RECETAS), detalles: true, libre: true })) },
-      el('div.t-ico', '🧾'), el('div.t-tit', 'Barra libre'), el('div.t-desc', 'Pedidos al azar de todo el menú, sin límite.')),
+      el('div.t-tit', 'Barra libre'), el('div.t-desc', 'Pedidos al azar de todo el menú, sin límite.')),
   );
 }
 
@@ -52,7 +52,7 @@ function barra(c, ctx, L) {
     for (const [kk, n] of Object.entries(paneles)) n.classList.toggle('oculto', kk !== k);
     tabs.querySelectorAll('.chip').forEach(b => b.classList.toggle('sel', b.dataset.k === k));
   };
-  for (const [k, t] of [['taza', '🍵 Taza'], ['espresso', '☕ Espresso'], ['leche', '🥛 Leche'], ['agua', '♨️ Agua']]) {
+  for (const [k, t] of [['taza', 'Taza'], ['espresso', 'Espresso'], ['leche', 'Leche'], ['agua', 'Agua']]) {
     tabs.append(el('button.chip', { role: 'tab', 'data-k': k, onclick: () => ir(k) }, t));
   }
 
@@ -66,21 +66,21 @@ function barra(c, ctx, L) {
     el('div.fila', btnShot, lcdShot), el('div.suave', 'El shot cae directo en la taza.'));
   // --- Leche ---
   const lecheFria = el('span.ac-lcd', '0 ml');
-  const btnLlenar = mantener(el('button.btn', '🥛 Llenar jarra (mantener)'), { alIniciar: () => { llenando = true; }, alSoltar: () => { llenando = false; } });
+  const btnLlenar = mantener(el('button.btn', 'Llenar jarra (mantener)'), { alIniciar: () => { llenando = true; }, alSoltar: () => { llenando = false; } });
   let llenando = false;
   const cvJarra = lienzo('ac-jarra', 'Jarra de leche: nivel, espuma y termómetro');
   const lecturaLeche = el('div.ac-lectura');
-  const btnVapor = mantener(el('button.btn.prim', '♨️ Vapor (mantener)'), {
+  const btnVapor = mantener(el('button.btn.prim', 'Vapor (mantener)'), {
     alIniciar: () => { if (!jarra || jarra.leche <= 0) return; vapor = true; sVapor = siseo(0.02, 2400); },
     alSoltar: () => { vapor = false; sVapor?.parar(); sVapor = null; },
   });
   const posBtns = el('div.chips', Object.entries(POSICIONES).map(([k, x]) => el('button.chip' + (k === posicion ? '.sel' : ''), {
     'data-pos': k, title: x.desc, onclick: () => setPos(k),
   }, x.n)));
-  const fuenteJarra = el('button.ac-fuente', { 'data-ico': '🫗', 'aria-label': 'Jarra: arrastrá sobre la taza para servir' }, el('span.ico', '🫗'), el('b', 'Servir leche'), el('span.suave', 'arrastrá a la taza'));
+  const fuenteJarra = el('button.ac-fuente', { 'aria-label': 'Jarra: arrastrá sobre la taza para servir' }, el('span.ico', el('i', { style: { background: '#f1e6d2' } })), el('b', 'Servir leche'), el('span.suave', 'arrastrá a la taza'));
   const chkRetener = el('label.fila', el('input', { type: 'checkbox', onchange: e => { retener = e.target.checked; } }), 'Retener la espuma con cuchara');
-  const btnCuchara = el('button.btn.chico', { onclick: () => { if (!jarra || !s.taza) return; const q = Math.min(15, jarra.espuma); jarra.espuma -= q; verterEnTaza('espuma', q); } }, '🥄 Cucharada de espuma');
-  const btnTirar = el('button.btn.chico', { onclick: () => { jarra = null; s.lecheRes = null; } }, '🗑️ Vaciar jarra');
+  const btnCuchara = el('button.btn.chico', { onclick: () => { if (!jarra || !s.taza) return; const q = Math.min(15, jarra.espuma); jarra.espuma -= q; verterEnTaza('espuma', q); } }, 'Cucharada de espuma');
+  const btnTirar = el('button.btn.chico', { onclick: () => { jarra = null; s.lecheRes = null; } }, 'Vaciar jarra');
   const panelLeche = el('div.panel',
     el('div.fila', btnLlenar, lecheFria, btnTirar),
     el('div.ac-jarra-fila', cvJarra, el('div', { style: { display: 'flex', flexDirection: 'column', gap: '6px', flex: 1, minWidth: '11em' } },
@@ -92,7 +92,7 @@ function barra(c, ctx, L) {
     alVerter: dt => { if (!jarra || !s.taza) return; const q = servirDeJarra(jarra, 38 * dt, retener); if (q.leche > 0.01) verterEnTaza('leche', q.leche); if (q.espuma > 0.01) verterEnTaza('espuma', q.espuma); },
   });
   // --- Agua ---
-  const fuenteAgua = el('button.ac-fuente', { 'data-ico': '♨️', 'aria-label': 'Agua caliente: arrastrá sobre la taza o mantené Espacio' }, el('span.ico', '♨️'), el('b', 'Agua caliente'), el('span.suave', 'arrastrá a la taza'));
+  const fuenteAgua = el('button.ac-fuente', { 'aria-label': 'Agua caliente: arrastrá sobre la taza o mantené Espacio' }, el('span.ico', el('i', { style: { background: '#b98a5c' } })), el('b', 'Agua caliente'), el('span.suave', 'arrastrá a la taza'));
   arrastrarParaVerter(fuenteAgua, {
     destino: () => vaso, color: '#b98a5c',
     alEmpezar: () => { sAgua = siseo(0.008, 1200); }, alParar: () => { sAgua?.parar(); },
@@ -102,11 +102,11 @@ function barra(c, ctx, L) {
   Object.assign(paneles, { taza: panelTaza, espresso: panelEsp, leche: panelLeche, agua: panelAgua });
   estaciones.append(tabs, panelTaza, panelEsp, panelLeche, panelAgua);
 
-  const btnEntregar = el('button.btn.prim.ac-grande', { onclick: entregar }, '🛎️ Entregar');
-  const btnReceta = el('button.btn.chico', { onclick: () => { s.ayuda = true; receta.classList.toggle('oculto'); } }, '📋 Receta');
+  const btnEntregar = el('button.btn.prim.ac-grande', { onclick: entregar }, 'Entregar');
+  const btnReceta = el('button.btn.chico', { onclick: () => { s.ayuda = true; receta.classList.toggle('oculto'); } }, 'Receta');
   const receta = el('div.panel.oculto');
   c.append(intro({ aprender: L.aprender }), el('div.ac-banco',
-    el('div.ac-col', ticket, el('div.ac-mesa', el('div.ac-mostrador', vaso, etiqueta), el('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } }, btnEntregar, btnReceta, el('button.btn.chico', { onclick: () => nuevo(false) }, '🗑️ Empezar de nuevo'))), receta, feedback),
+    el('div.ac-col', ticket, el('div.ac-mesa', el('div.ac-mostrador', vaso, etiqueta), el('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } }, btnEntregar, btnReceta, el('button.btn.chico', { onclick: () => nuevo(false) }, 'Empezar de nuevo'))), receta, feedback),
     el('div.ac-col', estaciones)));
 
   const total = () => Object.values(s.cont).reduce((a, b) => a + b, 0);
@@ -144,7 +144,7 @@ function barra(c, ctx, L) {
     const ev = evaluar(r, corto ? { ...OBJETIVOS.ristretto, ratio: [15 / 18, 25 / 18] } : { ...OBJETIVOS.normale, ratio: [30 / 18, 40 / 18] });
     s.shots.push(ev.puntaje);
     btnShot.textContent = '▶ Sacar otro shot';
-    feedback.replaceChildren(el('div.suave', `Shot: ${r.enTaza.toFixed(0)} g en ${r.tiempo.toFixed(0)} s → ${ev.puntaje >= 75 ? 'bien ✔' : ev.defectos.map(d => d.replace('_', ' ')).join(', ')}`));
+    feedback.replaceChildren(el('div.suave', `Shot: ${r.enTaza.toFixed(0)} g en ${r.tiempo.toFixed(0)} s → ${ev.puntaje >= 75 ? 'bien ✓' : ev.defectos.map(d => d.replace('_', ' ')).join(', ')}`));
     sfx.aceptar();
   }
 
@@ -235,7 +235,7 @@ function barra(c, ctx, L) {
     const p = L.libre ? (pedidos[0] = generarPedido(Math.random, L.recetas, { detalles: true })) : pedidos[iP];
     const r = recetaDelPedido(p);
     ticket.replaceChildren(el('div.suave', L.libre ? 'Barra libre' : `Pedido ${iP + 1}/${pedidos.length} · ${p.cliente}`),
-      el('div.mediano', { style: { fontSize: '1.15em' } }, `🗣️ "${p.texto}"`));
+      el('div.mediano', { style: { fontSize: '1.15em' } }, `"${p.texto}"`));
     receta.replaceChildren(el('b', r.n), el('div.suave', r.desc),
       el('div', Object.entries(r.comp).map(([k, [a, b]]) => `${k} ${a}–${b} ml`).join(' · ')),
       el('div.suave', `Taza: ${r.taza.map(t => TAZAS[t].n).join(' o ')}${r.orden ? ' · ' + (r.orden === 'espresso_ultimo' ? 'espresso al final' : 'espresso primero') : ''}${p.temp !== 'normal' ? ` · leche ${TEMP_PEDIDO[p.temp].rango.join('–')} °C` : ''}`));
@@ -251,11 +251,11 @@ function barra(c, ctx, L) {
     if (ev.total >= 75) { sfx.bien(); evento('pedido_ok'); } else sfx.mal();
     registrarAcademia({ comp: CON_LECHE(p.receta) ? 'leche' : 'recetas', puntaje: ev.total, errores: ev.errores, evaluado: false }, '');
     feedback.replaceChildren(el('div.panel',
-      el('div.fila', el('span.mediano', `${ev.total}`), el('span.suave', '/100'), el('span', ev.total >= 75 ? `😊 ${p.cliente}: "¡Qué rico!"` : `😕 ${p.cliente}: "Mmm…"`)),
+      el('div.fila', el('span.mediano', `${ev.total}`), el('span.suave', '/100'), el('span', ev.total >= 75 ? `${p.cliente}: "¡Qué rico!"` : `${p.cliente}: "Mmm…"`)),
       barras({ exactitud: ev.partes.exactitud / 10, tecnica: ev.partes.tecnica / 10, orden: ev.partes.orden / 10, presentacion: ev.partes.presentacion / 10 },
         { exactitud: 'Exactitud', tecnica: 'Técnica', orden: 'Orden', presentacion: 'Presentación' }),
       ev.notas.map(n => el('div', n)),
-      s.ayuda ? el('div.suave', '📋 Usaste la receta: está perfecto para aprender.') : null,
+      s.ayuda ? el('div.suave', 'Usaste la receta: está perfecto para aprender.') : null,
       el('div.fila', el('button.btn.prim', { onclick: () => nuevo(true) }, L.libre ? 'Otro pedido ▶' : iP + 1 < pedidos.length ? 'Siguiente pedido ▶' : 'Ver resultado ▶'))));
     btnEntregar.disabled = true;
     setTimeout(() => { btnEntregar.disabled = false; }, 400);
@@ -267,7 +267,7 @@ function barra(c, ctx, L) {
     const est = prom >= 90 ? 3 : prom >= 80 ? 2 : aprob ? 1 : 0;
     registrarAcademia({ comp: 'leche', leccion: L.id, puntaje: prom, estrellas: est, aprobada: aprob }, aprob ? 'pedidos' : 'práctica de pedidos');
     if (aprob) sfx.subir();
-    ticket.replaceChildren(el('div.mediano', `${prom}/100 `), estrellas(est), el('div', aprob ? '✅ Lección aprobada.' : '❌ 70 para aprobar. Mirá las notas de cada pedido.'),
+    ticket.replaceChildren(el('div.mediano', `${prom}/100 `), estrellas(est), el('div', aprob ? 'Lección aprobada.' : '70 para aprobar. Mirá las notas de cada pedido.'),
       el('div.fila', el('button.btn', { onclick: () => ctx.rehacer() }, '↻ Repetir'), el('button.btn.prim', { onclick: () => ctx.volver() }, 'Volver')));
   }
 

@@ -37,8 +37,8 @@ export function bucle(fn) {
 export function intro({ aprender, meta, extra }) {
   if (!aprender && !meta && !extra) return document.createDocumentFragment();
   return el('div.panel.ac-intro',
-    aprender ? el('div', el('b', '📖 Aprender: '), aprender) : null,
-    meta ? el('div', el('b', '🎯 Objetivo: '), meta) : null,
+    aprender ? el('div', el('b', 'Aprender: '), aprender) : null,
+    meta ? el('div', el('b', 'Objetivo: '), meta) : null,
     extra || null);
 }
 
@@ -210,7 +210,7 @@ export function arrastrarParaVerter(fuente, { destino, alVerter, alEmpezar = () 
     e.preventDefault();
     fuente.setPointerCapture(e.pointerId);
     px = e.clientX; py = e.clientY;
-    fantasma = el('div.ac-fantasma', fuente.dataset.ico || '🫗');
+    fantasma = el('div.ac-fantasma', el('i', { style: { background: color } }));
     chorro = el('div.ac-chorro');
     document.body.append(chorro, fantasma);
     pintar();

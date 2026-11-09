@@ -325,20 +325,20 @@ export function evaluarLatte(s, leccion) {
   const notas = [], partes = {};
   const llenado = s.nivel;
   partes.nivel = s.rebalso > 2 ? 0.2 : llenado >= 0.88 ? 1 : Math.max(0, 1 - (0.88 - llenado) * 4);
-  if (s.rebalso > 2) notas.push('💦 Rebalsó: cortá el chorro cuando la taza esté casi llena.');
-  else if (llenado < 0.85) notas.push(`🥛 Quedó a ${Math.round(llenado * 100)} %: falta llenar la taza.`);
+  if (s.rebalso > 2) notas.push('Rebalsó: cortá el chorro cuando la taza esté casi llena.');
+  else if (llenado < 0.85) notas.push(`Quedó a ${Math.round(llenado * 100)} %: falta llenar la taza.`);
   const cortesDeMas = Math.max(0, s.cortes - (leccion.cortesPermitidos || 0));
   partes.continuidad = Math.max(0, 1 - cortesDeMas * 0.25);
-  if (cortesDeMas > 0) notas.push(`✂️ Cortaste el chorro ${s.cortes} ${s.cortes === 1 ? 'vez' : 'veces'}: ${leccion.cortesPermitidos ? 'más de lo necesario' : 'cada corte rompe el dibujo'}.`);
+  if (cortesDeMas > 0) notas.push(`Cortaste el chorro ${s.cortes} ${s.cortes === 1 ? 'vez' : 'veces'}: ${leccion.cortesPermitidos ? 'más de lo necesario' : 'cada corte rompe el dibujo'}.`);
   if (!leccion.fig) {
     const cv = desvio(s.flujos) / Math.max(0.05, s.flujos.reduce((a, b) => a + b, 0) / Math.max(1, s.flujos.length));
     partes.constancia = Math.max(0, 1 - cv * 2);
     let blanco = 0; for (let k = 0; k < s.W.length; k++) blanco += s.W[k] > 0.5 ? 1 : 0;
     partes.limpio = Math.max(0, 1 - blanco / (N * N * 0.05));
-    if (partes.constancia < 0.7) notas.push('〰️ El flujo varió mucho: buscá una inclinación y mantenela.');
-    if (partes.limpio < 0.8) notas.push('⚪ Apareció blanco: la jarra estuvo demasiado cerca. Para la base, vertí desde arriba.');
+    if (partes.constancia < 0.7) notas.push('El flujo varió mucho: buscá una inclinación y mantenela.');
+    if (partes.limpio < 0.8) notas.push('Apareció blanco: la jarra estuvo demasiado cerca. Para la base, vertí desde arriba.');
     const pts = Math.round(100 * (0.35 * partes.constancia + 0.3 * partes.nivel + 0.2 * partes.continuidad + 0.15 * partes.limpio));
-    if (!notas.length) notas.push('✨ Base perfecta: crema intacta y taza llena.');
+    if (!notas.length) notas.push('Base perfecta: crema intacta y taza llena.');
     return { puntaje: pts, partes, notas };
   }
   const m = metricasForma(s, leccion.fig);
@@ -348,31 +348,31 @@ export function evaluarLatte(s, leccion) {
   if (leccion.fig === 'circulo') rasgo = 1 - Math.min(1, Math.max(r.muesca * 2.5, Math.abs(r.aspecto - 1) * 1.5, r.capas > 0 ? 0.4 : 0));
   if (leccion.fig === 'corazon') {
     rasgo = Math.min(1, r.muesca / 0.45) * (r.aspecto < 1.35 ? 1 : 0.3);
-    if (r.muesca < 0.25) notas.push('💔 Falta el corte: al final poné la jarra a media altura, bajá el flujo y atravesá el círculo desde su borde de arriba hacia abajo, rápido y recto.');
+    if (r.muesca < 0.25) notas.push('Falta el corte: al final poné la jarra a media altura, bajá el flujo y atravesá el círculo desde su borde de arriba hacia abajo, rápido y recto.');
   }
   if (leccion.fig === 'tulipan') {
     rasgo = (Math.min(1, r.capas / 3) * 0.6 + (r.aspecto >= 1.3 ? 0.4 : 0.1)) * (r.hojas >= 4 ? 0.6 : 1);
-    if (r.capas < 2) notas.push('🌷 No se ven capas: cortá el chorro entre empujones y empezá cada uno un poco más atrás (arriba) que el anterior.');
+    if (r.capas < 2) notas.push('No se ven capas: cortá el chorro entre empujones y empezá cada uno un poco más atrás (arriba) que el anterior.');
   }
   if (leccion.fig === 'rosetta') rasgo = r.aspecto >= 1.25 ? 1 : 0.4;
   Object.assign(partes, { forma: 0.5 * Math.min(1, m.iou / 0.6) + 0.5 * rasgo, simetria: limitar((m.simetria - 0.5) / 0.45, 0, 1), centrado: m.centrado, definicion: m.definicion });
-  if (m.cobertura < m.coberturaObjetivo * 0.5) notas.push('⚪ Muy poco blanco: bajá más la jarra (casi rozando) y subí el flujo cuando la taza esté a la mitad.');
-  else if (m.cobertura > m.coberturaObjetivo * 1.7) notas.push('⚪ Demasiado blanco: empezaste a dibujar muy temprano o con mucho flujo.');
-  if (s.blancoTemprano > 0.5) notas.push('⏱️ Bajaste la jarra con la taza casi vacía: el blanco se hunde y queda borroso. Esperá a ~50 %.');
-  if (partes.simetria < 0.6) notas.push('↔️ Poco simétrico: vertí sobre el eje central y cortá recto.');
-  if (partes.centrado < 0.6) notas.push('🎯 Descentrado: apuntá al centro de la taza.');
-  if (partes.forma < 0.6 && notas.length < 2) notas.push('✏️ La forma todavía no se parece a la figura: mirá la guía y probá de nuevo.');
+  if (m.cobertura < m.coberturaObjetivo * 0.5) notas.push('Muy poco blanco: bajá más la jarra (casi rozando) y subí el flujo cuando la taza esté a la mitad.');
+  else if (m.cobertura > m.coberturaObjetivo * 1.7) notas.push('Demasiado blanco: empezaste a dibujar muy temprano o con mucho flujo.');
+  if (s.blancoTemprano > 0.5) notas.push('Bajaste la jarra con la taza casi vacía: el blanco se hunde y queda borroso. Esperá a ~50 %.');
+  if (partes.simetria < 0.6) notas.push('Poco simétrico: vertí sobre el eje central y cortá recto.');
+  if (partes.centrado < 0.6) notas.push('Descentrado: apuntá al centro de la taza.');
+  if (partes.forma < 0.6 && notas.length < 2) notas.push('La forma todavía no se parece a la figura: mirá la guía y probá de nuevo.');
   partes.rasgos = r;
   let pts;
   if (leccion.hojas) {
     const hojas = r.hojas;
     partes.hojas = Math.min(1, hojas / leccion.hojas);
-    if (hojas < leccion.hojas) notas.push(`🌿 Se ven ${hojas} hojas (buscá ${leccion.hojas} o más): hacé el vaivén más amplio y retrocedé más despacio.`);
+    if (hojas < leccion.hojas) notas.push(`Se ven ${hojas} hojas (buscá ${leccion.hojas} o más): hacé el vaivén más amplio y retrocedé más despacio.`);
     pts = Math.round(100 * (0.3 * partes.forma + 0.3 * partes.hojas + 0.1 * partes.simetria + 0.1 * partes.centrado + 0.05 * partes.definicion + 0.075 * partes.nivel + 0.075 * partes.continuidad) * (0.6 + 0.4 * partes.hojas));
   } else {
     pts = Math.round(100 * (0.6 * partes.forma + 0.1 * partes.simetria + 0.1 * partes.centrado + 0.05 * partes.definicion + 0.075 * partes.nivel + 0.075 * partes.continuidad));
   }
-  if (!notas.length) notas.push('✨ ¡Precioso! Contraste limpio y buena forma.');
+  if (!notas.length) notas.push('¡Precioso! Contraste limpio y buena forma.');
   const { rasgos: rr, ...num } = partes;
   return { puntaje: pts, partes: num, rasgos: rr, notas, metricas: m };
 }

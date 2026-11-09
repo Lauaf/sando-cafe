@@ -4,22 +4,22 @@
 export const MOLIENDA = ['', 'extra fina (espresso)', 'muy fina', 'fina (moka)', 'media-fina (aeropress)', 'media (V60)', 'media-gruesa (chemex)', 'gruesa', 'gruesa (prensa)', 'muy gruesa', 'extra gruesa (cold brew)'];
 
 export const METODOS = {
-  v60: { n: 'V60 / filtro', ico: '🫖', k0: 0.0061, retiene: 2, tds: [1.15, 1.45],
+  v60: { n: 'V60 / filtro', k0: 0.0061, retiene: 2, tds: [1.15, 1.45],
     def: { dosis: 15, agua: 250, molienda: 5, temp: 93, tiempo: 180, agitacion: 1 },
     rango: { dosis: [10, 30], agua: [150, 500], molienda: [2, 9], temp: [80, 100], tiempo: [90, 360] } },
-  prensa: { n: 'Prensa francesa', ico: '🥛', k0: 0.01183, retiene: 2, tds: [1.15, 1.5],
+  prensa: { n: 'Prensa francesa', k0: 0.01183, retiene: 2, tds: [1.15, 1.5],
     def: { dosis: 30, agua: 500, molienda: 8, temp: 94, tiempo: 240, agitacion: 1 },
     rango: { dosis: [15, 45], agua: [250, 800], molienda: [4, 10], temp: [80, 100], tiempo: [120, 600] } },
-  aeropress: { n: 'Aeropress', ico: '🧪', k0: 0.00897, retiene: 1.6, tds: [1.2, 1.6],
+  aeropress: { n: 'Aeropress', k0: 0.00897, retiene: 1.6, tds: [1.2, 1.6],
     def: { dosis: 15, agua: 220, molienda: 4, temp: 85, tiempo: 120, agitacion: 1 },
     rango: { dosis: [10, 25], agua: [120, 260], molienda: [2, 8], temp: [75, 100], tiempo: [45, 300] } },
-  moka: { n: 'Moka / italiana', ico: '⚗️', k0: 0.0018, retiene: 1.4, tds: [3.0, 6.0], moka: true,
+  moka: { n: 'Moka / italiana', k0: 0.0018, retiene: 1.4, tds: [3.0, 6.0], moka: true,
     def: { dosis: 15, agua: 150, molienda: 3, fuego: 'medio', agitacion: 1 },
     rango: { dosis: [10, 22], agua: [100, 250], molienda: [1, 7] } },
-  espresso: { n: 'Espresso', ico: '☕', tds: [8, 12], espresso: true,
+  espresso: { n: 'Espresso', tds: [8, 12], espresso: true,
     def: { dosis: 18, salida: 36, molienda: 1.8, temp: 93 },
     rango: { dosis: [14, 22], salida: [18, 70], molienda: [1, 4], temp: [86, 98] } },
-  coldbrew: { n: 'Cold brew', ico: '🧊', k0: 0.000094, retiene: 2, tds: [2.0, 3.5], frio: true,
+  coldbrew: { n: 'Cold brew', k0: 0.000094, retiene: 2, tds: [2.0, 3.5], frio: true,
     def: { dosis: 100, agua: 800, molienda: 9, horas: 14, agitacion: 1 },
     rango: { dosis: [40, 150], agua: [400, 1200], molienda: [5, 10], horas: [4, 30] } },
 };
@@ -82,16 +82,16 @@ export function diagnostico(metodo, r) {
 // ingredientes: shot (30 ml espresso), chorrito (10 ml café), agua (ml), leche (vaporizada ml), espuma (cm),
 // fria (leche fría ml), choco, helado, hielo, condensada, cacao
 export const INGREDIENTES = [
-  { id: 'shot', n: 'Shot espresso', paso: 1, max: 3, ico: '☕', ml: 30, color: '#3b2314' },
-  { id: 'chorrito', n: 'Chorrito de café', paso: 1, max: 2, ico: '💧', ml: 10, color: '#4a2c1a' },
-  { id: 'agua', n: 'Agua caliente', paso: 30, max: 240, ico: '♨️', ml: 1, color: '#7a5032' },
-  { id: 'leche', n: 'Leche vaporizada', paso: 30, max: 270, ico: '🥛', ml: 1, color: '#e8d2b0' },
-  { id: 'espuma', n: 'Espuma (cm)', paso: 0.5, max: 4, ico: '☁️', ml: 15, color: '#fff8ec' },
-  { id: 'fria', n: 'Leche fría', paso: 30, max: 240, ico: '🧃', ml: 1, color: '#f4ead5' },
-  { id: 'choco', n: 'Chocolate', paso: 1, max: 2, ico: '🍫', ml: 20, color: '#5a341f' },
-  { id: 'condensada', n: 'Leche condensada', paso: 1, max: 2, ico: '🍯', ml: 20, color: '#f2dcb0' },
-  { id: 'hielo', n: 'Hielo', paso: 1, max: 1, ico: '🧊', ml: 60, color: '#cfe8ff' },
-  { id: 'helado', n: 'Bocha de helado', paso: 1, max: 2, ico: '🍨', ml: 60, color: '#fff4c2' },
+  { id: 'shot', n: 'Shot espresso', paso: 1, max: 3, ml: 30, color: '#3b2314' },
+  { id: 'chorrito', n: 'Chorrito de café', paso: 1, max: 2, ml: 10, color: '#4a2c1a' },
+  { id: 'agua', n: 'Agua caliente', paso: 30, max: 240, ml: 1, color: '#7a5032' },
+  { id: 'leche', n: 'Leche vaporizada', paso: 30, max: 270, ml: 1, color: '#e8d2b0' },
+  { id: 'espuma', n: 'Espuma (cm)', paso: 0.5, max: 4, ml: 15, color: '#fff8ec' },
+  { id: 'fria', n: 'Leche fría', paso: 30, max: 240, ml: 1, color: '#f4ead5' },
+  { id: 'choco', n: 'Chocolate', paso: 1, max: 2, ml: 20, color: '#5a341f' },
+  { id: 'condensada', n: 'Leche condensada', paso: 1, max: 2, ml: 20, color: '#f2dcb0' },
+  { id: 'hielo', n: 'Hielo', paso: 1, max: 1, ml: 60, color: '#cfe8ff' },
+  { id: 'helado', n: 'Bocha de helado', paso: 1, max: 2, ml: 60, color: '#fff4c2' },
 ];
 
 // req: ingrediente -> [min, max]; los no listados deben ser 0

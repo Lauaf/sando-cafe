@@ -20,21 +20,21 @@ import { LECCIONES as LECCIONES_LATTE } from './modelo-latte.js';
 
 // Orden sugerido: primero entender la extracción, después la leche y el servicio, al final filtrados y cata.
 export const RUTA = [
-  { id: 'espresso', n: 'El espresso perfecto', ico: '☕', comp: 'extraccion', render: hubEspresso, lecciones: LECCIONES_ESPRESSO,
+  { id: 'espresso', n: 'El espresso perfecto', comp: 'extraccion', render: hubEspresso, lecciones: LECCIONES_ESPRESSO,
     desc: 'Molé, dosificá, distribuí, tampeá y extraé en tiempo real. Carrera de 9 lecciones y desafío diario.' },
-  { id: 'diagnostico', n: 'Diagnóstico de espresso', ico: '🩺', comp: 'diagnostico', render: hubDiagnostico, lecciones: RONDAS,
+  { id: 'diagnostico', n: 'Diagnóstico de espresso', comp: 'diagnostico', render: hubDiagnostico, lecciones: RONDAS,
     desc: 'Un cliente se queja: leé el tiempo, el peso y el sabor, nombrá la causa y elegí la corrección.' },
-  { id: 'taza', n: '¿Qué café preparaste?', ico: '🥤', comp: 'recetas', render: hubTaza, lecciones: LECCIONES_TAZA,
+  { id: 'taza', n: '¿Qué café preparaste?', comp: 'recetas', render: hubTaza, lecciones: LECCIONES_TAZA,
     desc: 'Verté espresso, leche, espuma y agua arrastrando las jarras. Un clasificador te dice qué bebida armaste.' },
-  { id: 'pedido', n: 'Prepará el pedido', ico: '🧾', comp: 'leche', render: hubPedido, lecciones: LECCIONES_PEDIDO,
+  { id: 'pedido', n: 'Prepará el pedido', comp: 'leche', render: hubPedido, lecciones: LECCIONES_PEDIDO,
     desc: 'Taza, shots, vaporizado (airear y texturizar) y vertido en el orden correcto. Exactitud, técnica, orden y presentación.' },
-  { id: 'latte', n: 'Latte Art Academy', ico: '🎨', comp: 'latte', render: hubLatte, lecciones: LECCIONES_LATTE,
+  { id: 'latte', n: 'Latte Art Academy', comp: 'latte', render: hubLatte, lecciones: LECCIONES_LATTE,
     desc: 'Dibujá con el vertido: posición, inclinación y altura de la jarra. Flujo, círculo, corazón, tulipán y rosetta.' },
-  { id: 'rush', n: 'Rush Hour', ico: '⏱️', comp: 'servicio', render: hubRush, lecciones: LECCIONES_RUSH,
+  { id: 'rush', n: 'Rush Hour', comp: 'servicio', render: hubRush, lecciones: LECCIONES_RUSH,
     desc: 'La hora pico: clientes con paciencia, dos grupos y un vaporizador compartidos. Priorizá, trabajá en paralelo y no te equivoques.' },
-  { id: 'filtro', n: 'Laboratorio de filtrados', ico: '🫖', comp: 'filtrado', render: hubFiltro, lecciones: LECCIONES_FILTRO,
+  { id: 'filtro', n: 'Laboratorio de filtrados', comp: 'filtrado', render: hubFiltro, lecciones: LECCIONES_FILTRO,
     desc: 'V60, AeroPress y prensa: ratio, molienda, temperatura, bloom, vertidos e infusión. Comparación A/B de una variable.' },
-  { id: 'blend', n: 'Laboratorio de blends', ico: '🌱', comp: 'cata', render: hubBlend, lecciones: PEDIDOS_BLEND,
+  { id: 'blend', n: 'Laboratorio de blends', comp: 'cata', render: hubBlend, lecciones: PEDIDOS_BLEND,
     desc: 'Mezclá orígenes, variedades, procesos y tuestes. Perfil sensorial estimado con el aporte de cada café.' },
 ];
 
@@ -54,15 +54,15 @@ export function seccionAcademia(ctx) {
   const recs = recomendar(a, RUTA, MAPA_ERRORES, 2);
   return el('div.ac-seccion',
     el('div.fila',
-      el('h3.ac-h3', '🎓 Academia de barismo'),
-      el('button.btn.chico', { onclick: () => ctx.ir('Mi progreso en la Academia', progresoAcademia) }, '📊 Mi progreso')),
+      el('h3.ac-h3', 'Academia de barismo'),
+      el('button.btn.chico', { onclick: () => ctx.ir('Mi progreso en la Academia', progresoAcademia) }, 'Mi progreso')),
     recs.length ? el('div.ac-recs', recs.map(r => el('button.ac-rec', { onclick: () => abrirModulo(ctx, r.modulo) },
-      el('span', '👉 ', r.texto), el('span.suave', r.motivo)))) : null,
+      el('span', '→ ', r.texto), el('span.suave', r.motivo)))) : null,
     el('div.rejilla', RUTA.map((m, i) => {
       const pr = progresoModulo(a, m);
       const d = dominio(a, m.comp);
       return el('button.tarjeta.ac-modulo', { onclick: () => ctx.ir(m.n, m.render) },
-        el('div.fila', el('span.t-ico', m.ico), el('span.suave', `${i + 1}`)),
+        el('span.ac-num', `${i + 1}`),
         el('div.t-tit', m.n), el('div.t-desc', m.desc),
         el('div.hp', el('i', { style: { width: `${pr ? (pr.hechas / pr.total) * 100 : d ?? 0}%`, background: 'var(--oro)' } })),
         el('div.t-tag', pr ? `${pr.hechas}/${pr.total} lecciones${d != null ? ` · dominio ${d}` : ''}` : d != null ? `dominio ${d}/100` : 'sin empezar'));
@@ -78,12 +78,12 @@ function progresoAcademia(c, ctx) {
       const d = dominio(a, k);
       const n = a.comp[k]?.n || 0;
       return el('div.panel',
-        el('div.fila', el('span', `${comp.ico} ${comp.n}`), el('span.suave', n ? `${n} intentos` : 'sin practicar')),
+        el('div.fila', el('span', comp.n), el('span.suave', n ? `${n} intentos` : 'sin practicar')),
         el('div.hp', el('i', { style: { width: `${d ?? 0}%`, background: d == null ? 'transparent' : d >= 80 ? 'var(--bien)' : d >= 60 ? 'var(--oro)' : 'var(--mal)' } })),
         el('div.suave', d != null ? `Dominio ${d}/100` : comp.desc));
     })),
     el('h3.ac-h3', 'Qué practicar después'),
-    el('div.ac-recs', recomendar(a, RUTA, MAPA_ERRORES, 4).map(r => el('button.ac-rec', { onclick: () => abrirModulo(ctx, r.modulo) }, el('span', '👉 ', r.texto), el('span.suave', r.motivo)))),
+    el('div.ac-recs', recomendar(a, RUTA, MAPA_ERRORES, 4).map(r => el('button.ac-rec', { onclick: () => abrirModulo(ctx, r.modulo) }, el('span', '→ ', r.texto), el('span.suave', r.motivo)))),
   );
 }
 

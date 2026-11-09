@@ -63,12 +63,12 @@ export function evaluarLeche(res, bebida, tempObj = [55, 65]) {
   const [eMin, eMax] = ESPUMA_OBJETIVO[bebida] || [0.1, 0.3];
   const notas = [];
   let pen = 0;
-  if (res.quemada) { pen += 65; notas.push('🔥 Se quemó (>76 °C): sabor a cocido, sin dulzor.'); }
-  else if (res.maxTemp > tempObj[1] + 4) { pen += (res.maxTemp - tempObj[1]) * 3; notas.push(`🌡️ Muy caliente (${Math.round(res.maxTemp)} °C): la lactosa se percibe menos dulce arriba de ~65–70 °C.`); }
-  if (res.temp < tempObj[0] - 3) { pen += (tempObj[0] - res.temp) * 2.5; notas.push(`🌡️ Quedó tibia (${Math.round(res.temp)} °C).`); }
-  if (res.expansion < eMin - 0.02) { pen += (eMin - res.expansion) * 140; notas.push(`☁️ Poca espuma (+${Math.round(res.expansion * 100)} % de volumen; buscá ${Math.round(eMin * 100)}–${Math.round(eMax * 100)} %): aireá más tiempo al principio.`); }
-  if (res.expansion > eMax + 0.02) { pen += (res.expansion - eMax) * 140; notas.push(`☁️ Demasiada espuma (+${Math.round(res.expansion * 100)} %; buscá ${Math.round(eMin * 100)}–${Math.round(eMax * 100)} %): aireá menos.`); }
-  if (res.expansion > 0.04 && res.textura < 0.65) { pen += (0.65 - res.textura) * 70; notas.push('🫧 Burbujas grandes: aireaste tarde (leche ya caliente) o con la punta muy afuera. Hundí la punta para texturizar.'); }
-  if (!notas.length) notas.push('✨ Leche sedosa, brillante y a buena temperatura.');
+  if (res.quemada) { pen += 65; notas.push('Se quemó (>76 °C): sabor a cocido, sin dulzor.'); }
+  else if (res.maxTemp > tempObj[1] + 4) { pen += (res.maxTemp - tempObj[1]) * 3; notas.push(`Muy caliente (${Math.round(res.maxTemp)} °C): la lactosa se percibe menos dulce arriba de ~65–70 °C.`); }
+  if (res.temp < tempObj[0] - 3) { pen += (tempObj[0] - res.temp) * 2.5; notas.push(`Quedó tibia (${Math.round(res.temp)} °C).`); }
+  if (res.expansion < eMin - 0.02) { pen += (eMin - res.expansion) * 140; notas.push(`Poca espuma (+${Math.round(res.expansion * 100)} % de volumen; buscá ${Math.round(eMin * 100)}–${Math.round(eMax * 100)} %): aireá más tiempo al principio.`); }
+  if (res.expansion > eMax + 0.02) { pen += (res.expansion - eMax) * 140; notas.push(`Demasiada espuma (+${Math.round(res.expansion * 100)} %; buscá ${Math.round(eMin * 100)}–${Math.round(eMax * 100)} %): aireá menos.`); }
+  if (res.expansion > 0.04 && res.textura < 0.65) { pen += (0.65 - res.textura) * 70; notas.push('Burbujas grandes: aireaste tarde (leche ya caliente) o con la punta muy afuera. Hundí la punta para texturizar.'); }
+  if (!notas.length) notas.push('Leche sedosa, brillante y a buena temperatura.');
   return { puntaje: Math.round(Math.max(0, Math.min(100, 100 - pen))), notas };
 }

@@ -19,10 +19,10 @@ export function hubFiltro(c, ctx) {
       const abierta = desbloqueada(a, LECCIONES, L.id);
       const reg = a.lecciones[L.id];
       return el('button.ac-leccion' + (abierta ? '' : '.bloq') + (reg?.aprobada ? '.hecha' : ''), { disabled: !abierta, onclick: () => ctx.ir(L.t, (cc, cx) => leccion(cc, cx, L)) },
-        el('span.n', String(i + 1)), el('span.t', `${L.t} · ${METODOS[L.metodo].n}`), reg ? estrellas(reg.estrellas) : el('span.suave', abierta ? 'nueva' : '🔒'));
+        el('span.n', String(i + 1)), el('span.t', `${L.t} · ${METODOS[L.metodo].n}`), reg ? estrellas(reg.estrellas) : el('span.suave', abierta ? 'nueva' : 'bloqueada'));
     })),
     el('button.tarjeta', { onclick: () => ctx.ir('Laboratorio A/B', laboratorioAB) },
-      el('div.t-ico', '⚖️'), el('div.t-tit', 'Laboratorio A/B'),
+      el('div.t-tit', 'Laboratorio A/B'),
       el('div.t-desc', 'Dos recetas lado a lado, con la misma simulación. Ideal para aislar el efecto de una sola variable.'),
       el('div.t-tag', `${a.ab || 0} experimentos con una sola variable`)),
   );
@@ -167,10 +167,10 @@ function leccion(c, ctx, L) {
   const historial = [];
   let anim = null;
   const ed = editor(L.metodo, receta, L.controles, () => {});
-  const btn = el('button.btn.prim.ac-grande', { onclick: preparar }, '☕ Preparar');
+  const btn = el('button.btn.prim.ac-grande', { onclick: preparar }, 'Preparar');
   c.append(intro({ aprender: L.aprender, meta: L.meta }),
     el('div.ac-banco',
-      el('div.ac-col', vista, el('div.fila', btn, el('button.btn.chico', { onclick: () => anim?.saltar() }, '⏭ Saltar'), el('button.btn.chico', { onclick: e => { if (anim) e.target.textContent = `⏩ ×${anim.acelerar()}`; } }, '⏩ ×12')), chart),
+      el('div.ac-col', vista, el('div.fila', btn, el('button.btn.chico', { onclick: () => anim?.saltar() }, 'Saltar ›'), el('button.btn.chico', { onclick: e => { if (anim) e.target.textContent = `×${anim.acelerar()}`; } }, '×12')), chart),
       el('div.ac-col', el('div.panel', el('b', 'Receta'), ed.nodo), resultado)));
   requestAnimationFrame(() => grafico(chart, [], L.metodo));
 
@@ -191,8 +191,8 @@ function leccion(c, ctx, L) {
     aprob ? sfx.bien() : sfx.mal();
     grafico(chart, historial.map((x, i) => ({ ...x, col: i === historial.length - 1 ? '#f2c14e' : '#d39a6288' })), L.metodo);
     resultado.replaceChildren(el('div.panel',
-      el('div.fila', el('span.mediano', `${e.puntaje}`), el('span.suave', '/100'), estrellas(est), aprob ? el('span.ok', '✅ ¡Lección superada!') : null),
-      el('div', `⏱ ${fmtT(r.tiempo)} · ${Math.round(r.bebida)} g de bebida · EY ≈ ${r.ey.toFixed(1)} % · TDS ≈ ${r.tds.toFixed(2)} %`),
+      el('div.fila', el('span.mediano', `${e.puntaje}`), el('span.suave', '/100'), estrellas(est), aprob ? el('span.ok', '¡Lección superada!') : null),
+      el('div', `Tiempo ${fmtT(r.tiempo)} · ${Math.round(r.bebida)} g de bebida · EY ≈ ${r.ey.toFixed(1)} % · TDS ≈ ${r.tds.toFixed(2)} %`),
       el('div.suave', 'Estimaciones del modelo (no mediciones).'),
       e.notas.map(n => el('div', n)),
       aprob ? el('button.btn.prim', { onclick: () => ctx.volver() }, 'Volver a las lecciones') : null));
@@ -217,7 +217,7 @@ function laboratorioAB(c) {
     const pintarAviso = () => {
       const d = diferencias(recA, recB);
       aviso.className = d.length === 1 ? 'ok' : d.length ? 'no' : 'suave';
-      aviso.textContent = d.length === 0 ? 'A y B son iguales: cambiá una variable en B.' : d.length === 1 ? `✔ Cambia solo: ${VARIABLES[d[0]]?.n || 'patrón'}. Buen experimento.` : `⚠️ Cambian ${d.length} variables (${d.map(k => VARIABLES[k]?.n || 'patrón').join(', ')}): el resultado no se va a poder atribuir a una sola.`;
+      aviso.textContent = d.length === 0 ? 'A y B son iguales: cambiá una variable en B.' : d.length === 1 ? `✓ Cambia solo: ${VARIABLES[d[0]]?.n || 'patrón'}. Buen experimento.` : `Cambian ${d.length} variables (${d.map(k => VARIABLES[k]?.n || 'patrón').join(', ')}): el resultado no se va a poder atribuir a una sola.`;
     };
     const edA = editor(metodo, recA, null, () => pintarAviso());
     const edB = editor(metodo, recB, null, () => pintarAviso());
@@ -226,7 +226,7 @@ function laboratorioAB(c) {
     const curvas = lienzo('ac-grafico', 'Extracción a lo largo del tiempo, A y B');
     const tabla = el('div', { 'aria-live': 'polite' });
     let anims = [];
-    const btn = el('button.btn.prim.ac-grande', { onclick: preparar }, '☕ Preparar A y B');
+    const btn = el('button.btn.prim.ac-grande', { onclick: preparar }, 'Preparar A y B');
     cuerpo.replaceChildren(
       el('div.ac-ab',
         el('div.panel', el('b', { style: { color: COL.A } }, 'Receta A'), edA.nodo, cvA),
@@ -256,7 +256,7 @@ function laboratorioAB(c) {
           fila('TDS ≈', sA.resultado.tds.toFixed(2), sB.resultado.tds.toFixed(2), ' %'),
           fila('Puntaje', eA.puntaje, eB.puntaje)),
         el('div', el('b', 'A: '), eA.notas[0]), el('div', el('b', 'B: '), eB.notas[0]),
-        d.length === 1 ? el('div.ok', `🔬 Conclusión: cambiar ${VARIABLES[d[0]]?.n.toLowerCase() || 'el patrón'} movió la extracción ${signo(sB.resultado.ey - sA.resultado.ey)} % y el TDS ${signo(sB.resultado.tds - sA.resultado.tds, 2)} %.`) : null,
+        d.length === 1 ? el('div.ok', `Conclusión: cambiar ${VARIABLES[d[0]]?.n.toLowerCase() || 'el patrón'} movió la extracción ${signo(sB.resultado.ey - sA.resultado.ey)} % y el TDS ${signo(sB.resultado.tds - sA.resultado.tds, 2)} %.`) : null,
         el('div.suave', 'Estimaciones del modelo, no mediciones.')));
       };
       anims = [animador(cvA, metodo, { ...recA }, sA, fin), animador(cvB, metodo, { ...recB }, sB, fin)];

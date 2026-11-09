@@ -77,12 +77,12 @@ export function mezclar(componentes) {
   // enmascaramiento: lo delicado se pierde con amargor y notas terrosas fuertes
   const fuerte = perfil.amargor + perfil.terroso;
   const tapa = Math.max(0.4, 1 - 0.07 * Math.max(0, fuerte - 6));
-  if (tapa < 0.95 && (perfil.floral > 2 || perfil.frutado > 2)) notas.push(`🫥 El amargor y lo terroso tapan parte de lo floral y frutado (−${Math.round((1 - tapa) * 100)} %).`);
+  if (tapa < 0.95 && (perfil.floral > 2 || perfil.frutado > 2)) notas.push(`El amargor y lo terroso tapan parte de lo floral y frutado (−${Math.round((1 - tapa) * 100)} %).`);
   perfil.floral *= tapa; perfil.frutado *= tapa;
   // claridad: muchos componentes o tuestes distintos ensucian la taza
   const tuestes = new Set(activos.map(c => c.tueste));
-  if (activos.length > 3) { perfil.claridad -= (activos.length - 3) * 0.8; notas.push(`🌫️ ${activos.length} componentes: cuantos más, menos definida queda la taza.`); }
-  if (tuestes.has('claro') && tuestes.has('oscuro')) { perfil.claridad -= 1.5; notas.push('⚖️ Mezclar tuestes claro y oscuro: cada uno se extrae distinto y la taza queda despareja (sobre todo en espresso).'); }
+  if (activos.length > 3) { perfil.claridad -= (activos.length - 3) * 0.8; notas.push(`${activos.length} componentes: cuantos más, menos definida queda la taza.`); }
+  if (tuestes.has('claro') && tuestes.has('oscuro')) { perfil.claridad -= 1.5; notas.push('Mezclar tuestes claro y oscuro: cada uno se extrae distinto y la taza queda despareja (sobre todo en espresso).'); }
   // complejidad: diversidad de atributos dominantes entre componentes
   const dominantes = new Set(activos.map(c => { const p = perfilTostado(CAFES.find(x => x.id === c.id), c.tueste); return Object.entries(p).filter(([k]) => !['claridad', 'dulzor'].includes(k)).sort((a, b) => b[1] - a[1])[0][0]; }));
   const complejidad = Math.min(10, 3 + dominantes.size * 2 + (activos.length >= 2 ? 1 : 0) - Math.max(0, activos.length - 4));

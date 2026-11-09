@@ -18,7 +18,7 @@ export function hubDiagnostico(c, ctx) {
       const reg = a.lecciones[R.id];
       return el('button.ac-leccion' + (abierta ? '' : '.bloq') + (reg?.aprobada ? '.hecha' : ''), {
         disabled: !abierta, onclick: () => ctx.ir(R.t, (cc, cx) => ronda(cc, cx, R)),
-      }, el('span.n', String(i + 1)), el('span.t', `${R.t} · ${R.n} casos`), reg ? estrellas(reg.estrellas) : el('span.suave', abierta ? 'nueva' : '🔒'));
+      }, el('span.n', String(i + 1)), el('span.t', `${R.t} · ${R.n} casos`), reg ? estrellas(reg.estrellas) : el('span.suave', abierta ? 'nueva' : 'bloqueada'));
     })),
     el('div.suave', 'Cada ronda se aprueba con 70 puntos de promedio. Los casos cambian en cada intento.'),
   );
@@ -48,13 +48,13 @@ function ronda(c, ctx, R) {
     zona.replaceChildren(
       el('div.suave', `Caso ${i + 1}/${casos.length}`),
       el('div.panel.ac-caso',
-        el('div.mediano', { style: { fontSize: '1.1em' } }, `🗣️ "${caso.plantilla.queja}"`),
+        el('div.mediano', { style: { fontSize: '1.1em' } }, `"${caso.plantilla.queja}"`),
         el('div.dos-col',
           el('div', { style: { display: 'flex', flexDirection: 'column', gap: '6px' } },
-            el('div', `📋 Receta: ${e.p.dosis} g → ${r.enTaza.toFixed(0)} g en taza (1:${r.ratio.toFixed(1)}) · ${e.p.temp} °C · tueste ${TUESTES[e.p.tueste].n.toLowerCase()}`),
-            el('div', `⏱ ${r.tiempo.toFixed(1)} s · primera gota a los ${r.primeraGota?.toFixed(1) ?? '—'} s`),
-            el('div', `👅 En la taza: ${cata.join(', ')}`),
-            pistas.length ? el('div', `👀 ${pistas.join('; ')}`) : null,
+            el('div', `Receta: ${e.p.dosis} g → ${r.enTaza.toFixed(0)} g en taza (1:${r.ratio.toFixed(1)}) · ${e.p.temp} °C · tueste ${TUESTES[e.p.tueste].n.toLowerCase()}`),
+            el('div', `Tiempo ${r.tiempo.toFixed(1)} s · primera gota a los ${r.primeraGota?.toFixed(1) ?? '—'} s`),
+            el('div', `En la taza: ${cata.join(', ')}`),
+            pistas.length ? el('div', `Pistas: ${pistas.join('; ')}`) : null,
             tazaColor(r)),
           curva)),
       pasoCausa, pasoCorr, salida);
@@ -69,7 +69,7 @@ function ronda(c, ctx, R) {
       if (!ok) pasoCausa.querySelectorAll('button').forEach((b, n) => { if (caso.plantilla.causas.includes(Object.keys(CAUSAS)[n])) b.classList.add('correcta'); });
       ok ? sfx.bien() : sfx.mal();
       const principal = CAUSAS[caso.plantilla.causas[0]];
-      pasoCausa.append(el('div' + (ok ? '.ok' : parcial ? '' : '.no'), ok ? `✔ ${principal.desc}` : parcial ? `≈ Tiene algo de eso, pero lo principal es: ${principal.n}. ${principal.desc}` : `✘ Lo principal es: ${principal.n}. ${principal.desc}`));
+      pasoCausa.append(el('div' + (ok ? '.ok' : parcial ? '' : '.no'), ok ? `✓ ${principal.desc}` : parcial ? `≈ Tiene algo de eso, pero lo principal es: ${principal.n}. ${principal.desc}` : `✘ Lo principal es: ${principal.n}. ${principal.desc}`));
       pasoCorr.classList.remove('oculto');
     }
 
@@ -80,7 +80,7 @@ function ronda(c, ctx, R) {
       pasoCorr.querySelectorAll('button').forEach(b => { b.disabled = true; });
       boton.classList.add(p.clase === 'mejor' ? 'correcta' : p.clase === 'valida' || p.clase === 'poco' ? 'parcial' : 'incorrecta');
       p.corr >= 35 ? sfx.bien() : sfx.mal();
-      const etiqueta = { mejor: '🏆 la mejor', valida: '👍 también sirve', poco: '🤏 ayuda poco', neutra: '😐 casi no cambia', empeora: '👎 empeora' };
+      const etiqueta = { mejor: 'la mejor', valida: 'también sirve', poco: 'ayuda poco', neutra: 'casi no cambia', empeora: 'empeora' };
       salida.replaceChildren(el('div.panel',
         el('div.fila', el('span.mediano', `${p.total}`), el('span.suave', '/100 en este caso')),
         el('div.suave', 'Qué habría pasado con cada opción (simulado):'),
@@ -91,7 +91,7 @@ function ronda(c, ctx, R) {
             el('td', `${o.ev.puntaje} (${o.delta >= 0 ? '+' : ''}${o.delta})`)))),
         el('div.suave', 'No hay una única respuesta: varias correcciones pueden funcionar. La molienda suele ser la primera palanca porque cambia el tiempo de contacto sin tocar la receta.'),
         el('div.fila',
-          el('button.btn', { onclick: () => ctx.ir('Probalo en el simulador', bancoCon(e.p, e.salida)) }, '☕ Probalo en el simulador'),
+          el('button.btn', { onclick: () => ctx.ir('Probalo en el simulador', bancoCon(e.p, e.salida)) }, 'Probalo en el simulador'),
           el('button.btn.prim', { onclick: () => { i++; mostrar(); } }, i + 1 < casos.length ? 'Siguiente caso ▶' : 'Ver resultado ▶'))));
     }
   }
@@ -104,7 +104,7 @@ function ronda(c, ctx, R) {
     if (aprob) sfx.subir();
     zona.replaceChildren(el('div.panel', { style: { textAlign: 'center' } },
       el('div.mediano', `${prom}/100`), estrellas(est),
-      el('div', aprob ? '✅ Ronda aprobada.' : '❌ Te faltó un poco: 70 para aprobar.'),
+      el('div', aprob ? 'Ronda aprobada.' : 'Te faltó un poco: 70 para aprobar.'),
       el('div.fila.centro', el('button.btn', { onclick: () => ctx.rehacer() }, '↻ Otra ronda'), el('button.btn.prim', { onclick: () => ctx.volver() }, 'Volver'))));
   }
 }
